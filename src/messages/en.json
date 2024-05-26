@@ -1,0 +1,20 @@
+{
+  "Navigation": {
+    "logo": "The holy quran",
+    "reciters": "Reciters"
+  },
+  "Home": {
+    "title": "Listen to the Holy Quran",
+    "subtitle": "Listen and download the Holy Quran in the voice of the most famous reciters",
+    "startListening": "Start Listening"
+  },
+  "Reciters": {
+    "title": "Reciters",
+    "reciter": "Reciter"
+  },
+  "Search": {
+    "placeholderReciters": "Search a reciter",
+    "placeholderSurah": "Search a surah",
+    "changeReciter": "Select reciter"
+  }
+}

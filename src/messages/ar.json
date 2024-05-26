@@ -1,0 +1,20 @@
+{
+  "Navigation": {
+    "logo": "القرآن الكريم",
+    "reciters": "قراء القرآن"
+  },
+  "Home": {
+    "title": "استمع إلى القرآن الكريم",
+    "subtitle": "استماع وتحميل القرآن الكريم كاملا بصوت أشهر القراء",
+    "startListening": "ابدأ الاستماع"
+  },
+  "Reciters": {
+    "title": "قراء القرآن",
+    "reciter": "القارئ"
+  },
+  "Search": {
+    "placeholderReciters": "إبحث عن قارئ",
+    "placeholderSurah": "إبحث عن سورة",
+    "changeReciter": "تغيير القارئ"
+  }
+}

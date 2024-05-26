@@ -3,6 +3,7 @@
 import { Link } from "@/lib/intl";
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "./LocaleSwitcher";
+import { Github } from "lucide-react";
 
 interface INavbar {}
 
@@ -22,6 +23,14 @@ export default function Navbar({}: INavbar) {
             {t("reciters")}
           </p>
         </Link>
+        <div className="flex items-center justify-center h-10 w-10 bg-black rounded-full">
+          <Link
+            href={"https://github.com/youssef-of-web/quran-lake"}
+            target="_blank"
+          >
+            <Github className="text-white" />
+          </Link>
+        </div>
       </div>
     </header>
   );

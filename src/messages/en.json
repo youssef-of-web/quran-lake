@@ -16,5 +16,8 @@
     "placeholderReciters": "Search a reciter",
     "placeholderSurah": "Search a surah",
     "changeReciter": "Select reciter"
+  },
+  "Words": {
+    "sourah": "sourah"
   }
 }

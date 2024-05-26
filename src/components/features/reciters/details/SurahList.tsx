@@ -58,7 +58,7 @@ export default function Surah_List({
 
   return (
     <div className="mt-16">
-      <div className="grid grid-cols-4 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-3 lg:grid-cols-6 gap-4">
         {FilteredList.map((surah) => (
           <div
             onClick={() => PlayAudio(surah)}

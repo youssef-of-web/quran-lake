@@ -1,6 +1,7 @@
 "use client";
 import { IMoshaf } from "@/types/Reciter";
 import classNames from "classnames";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 interface IProps extends IMoshaf {
@@ -16,6 +17,7 @@ export default function Moshaf({
   index,
   surah_total,
 }: IProps) {
+  const t = useTranslations("Words");
   return (
     <div
       className={classNames(
@@ -31,10 +33,9 @@ export default function Moshaf({
             <p className="text-md font-bold">{name}</p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-primary text-ellipsis font-bold">
-              {surah_total}
+            <span className="flex gap-2 text-primary text-ellipsis font-bold">
+              {surah_total} <p>{t("sourah")}</p>
             </span>
-            <p>سورة</p>
           </div>
         </div>
       </div>

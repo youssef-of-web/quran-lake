@@ -1,5 +1,7 @@
-# Holy Quran Application
+# Holy Quran
 
-## I use in this application the open source api from quran mp3 website
+Website: (https://quran-like.vercel.app)[Demo]
 
-## You can open it locally and listen to the holy quran
+[Holy Quran] is an application to listen to the holy quran.
+
+![Holy Quran](./public/home.png)

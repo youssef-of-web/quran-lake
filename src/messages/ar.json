@@ -10,7 +10,10 @@
   },
   "Reciters": {
     "title": "قراء القرآن",
-    "reciter": "القارئ"
+    "reciter": "القارئ",
+    "default": {
+      "name": "فارس عباد"
+    }
   },
   "Search": {
     "placeholderReciters": "إبحث عن قارئ",

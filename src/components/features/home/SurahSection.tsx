@@ -5,6 +5,7 @@ import { defaultReciter } from "@/data/data";
 import { Suwar } from "@/types/Surah";
 import Button from "../../ui/Button";
 import { generateServerUrlId } from "@/helpers/utils";
+import { useTranslations } from "next-intl";
 
 interface ISurahSection {
   suwar: Suwar;
@@ -14,11 +15,13 @@ export default function SurahSection({ suwar }: ISurahSection) {
   const { setReciter, setServer, setOpen, setSurah } = useContext(
     AudioContext
   ) as Audio;
+  const t = useTranslations("Reciters");
 
   const suratList = suwar?.suwar;
   /* from context @see ./context/AudioContext */
 
   const PlayAudio = (surah: any) => {
+    defaultReciter.name = t("default.name");
     setReciter(defaultReciter);
     setOpen(true);
     setSurah(surah);

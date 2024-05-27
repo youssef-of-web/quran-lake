@@ -10,7 +10,10 @@
   },
   "Reciters": {
     "title": "Reciters",
-    "reciter": "Reciter"
+    "reciter": "Reciter",
+    "default": {
+      "name": "Fares Abbad"
+    }
   },
   "Search": {
     "placeholderReciters": "Search a reciter",

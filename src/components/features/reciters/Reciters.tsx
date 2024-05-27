@@ -35,7 +35,7 @@ export default function Reciters({ reciters }: IReciters) {
       />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 container mx-auto px-2">
         {filetredReciters?.map((reciter) => (
-          <Reciter {...reciter} />
+          <Reciter {...reciter} key={reciter.id} />
         ))}
       </div>
     </>

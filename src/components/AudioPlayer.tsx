@@ -3,8 +3,9 @@ import { Link } from "@/lib/intl";
 import { IReciter } from "@/types/Reciter";
 import { Surah } from "@/types/Surah";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useState } from "react";
 
 import Select from "react-select";
@@ -40,13 +41,25 @@ export default function AudioPlayer({
       transition={{ duration: 0.5 }}
       className={
         open
-          ? `h-48 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
-          : `h-16 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
+          ? `h-40 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
+          : `h-14 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
       }
     >
-      <div className="max-w-2xl mx-auto flex flex-col items-center justify-center gap-4">
-        <Link href={`/reciters/${reciter.id}`}>
-          <p className="text-xl mt-4">{`${reciter.name}- ${surah?.name}`} </p>
+      <div className="relative max-w-2xl mx-auto flex flex-col items-center justify-center gap-4">
+        <Link
+          href={`/reciters/${reciter.id}`}
+          className="flex items-center gap-2"
+        >
+          <Image
+            src={"/reciter.png"}
+            width={25}
+            height={14}
+            alt={reciter.name}
+            className="mt-1"
+          />
+          <p className="text-ellipsis mt-4">
+            {`${reciter.name}- ${surah?.name}`}{" "}
+          </p>
         </Link>
         {/* audio */}
         <audio
@@ -54,32 +67,34 @@ export default function AudioPlayer({
           autoPlay={true}
           src={server}
           loop
-          className="w-full h-10 mb-5 bg-slate-150 border-none"
+          className="w-full h-6  bg-slate-150 border-none"
         ></audio>
         {/* select */}
-        <Select
-          onChange={(e) =>
-            playAudio(surah, recitersList.find((r) => r.id === +e?.value!)!)
-          }
-          placeholder={t("changeReciter")}
-          options={options}
-          className="w-full mb-6"
-          menuPlacement="top"
-          styles={{
-            control: (provided, state) => ({
-              ...provided,
-              boxShadow: "none",
-              border: "none",
-            }),
-          }}
-        />
+        <div className="w-full px-4">
+          <Select
+            onChange={(e) =>
+              playAudio(surah, recitersList.find((r) => r.id === +e?.value!)!)
+            }
+            placeholder={t("changeReciter")}
+            options={options}
+            className="w-full"
+            menuPlacement="top"
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                boxShadow: "none",
+                border: "none",
+              }),
+            }}
+          />
+        </div>
       </div>
-      <div className="absolute top-0 right-0 mt-4 mr-4 w-8 h-8 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center cursor-pointer">
+      <div className="absolute top-0 right-0 mt-2 mr-4 w-6 h-6 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center cursor-pointer">
         <div className="m-4">
           {open ? (
-            <ArrowDown className={"w-8 h-8"} onClick={handleOpen} />
+            <ArrowDownCircle className={"w-6 h-6"} onClick={handleOpen} />
           ) : (
-            <ArrowUp className="w-8 h-8" onClick={handleOpen} />
+            <ArrowUpCircle className="w-6 h-6" onClick={handleOpen} />
           )}
         </div>
       </div>

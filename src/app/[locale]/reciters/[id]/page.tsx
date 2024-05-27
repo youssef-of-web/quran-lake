@@ -1,6 +1,6 @@
 import { getReciterById, getSurahList } from "@/api";
 import Detail from "@/components/features/reciters/details/Detail";
-import { IReciter, RecitersResponse } from "@/types/Reciter";
+import { RecitersResponse } from "@/types/Reciter";
 import { Suwar } from "@/types/Surah";
 
 import type { Metadata } from "next";
@@ -15,7 +15,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { id: number } }) {
-  const data = await getReciterById<{ reciters: IReciter[] }>(params.id);
+  const data = await getReciterById<RecitersResponse>(params.id);
   const surah_List = await getSurahList<Suwar>();
   const reciter = data?.reciters[0];
 

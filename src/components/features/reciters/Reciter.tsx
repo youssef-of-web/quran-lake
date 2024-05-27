@@ -11,7 +11,7 @@ export default function Reciter({ name, id }: ReciterProps) {
       <div className="flex items-center p-4 h-22 shadow shadow-slate-300">
         <div className="text-center mt-2 flex items-center gap-4 h-12">
           <Image src={"/reciter.png"} width={25} height={25} alt={name} />
-          <p className="font-bold text-lg">{name}</p>
+          <p className="font-bold text-ellipsis">{name}</p>
         </div>
       </div>
     </Link>

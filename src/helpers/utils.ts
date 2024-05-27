@@ -14,5 +14,5 @@ export const generateServerUrlId = (id: string) => {
 
 export const getLocalForApi = async () => {
   const locale = await getLocale();
-  return locale === "en" ? "eng" : "en";
+  return locale === "en" ? "eng" : "ar";
 };

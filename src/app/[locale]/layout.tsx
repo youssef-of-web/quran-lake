@@ -34,7 +34,10 @@ export default async function RootLayout({
   const filteredreciters = getFilteredReciters(data?.reciters!);
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body className={locale === "ar" ? arFont.className : inter.className}>
+      <body
+        className={locale === "ar" ? arFont.className : inter.className}
+        suppressHydrationWarning={true}
+      >
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col gap-8">
             <AudioWrapper recitersList={filteredreciters!}>

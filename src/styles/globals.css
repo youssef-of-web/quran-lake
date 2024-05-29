@@ -3,3 +3,72 @@
 @tailwind utilities;
 
 
+@layer base {
+
+    :root {
+        --bg-primary: 255 255 255;
+        --bg-primary-variant: 255 255 255;
+        --bg-secondary: 243 244 246;
+        --primary: 14 59 90;
+        --base: 0 0 0;
+        --white: 255 255 255;
+        --black: 0 0 0;
+        --select-bg: #FFFFFF;
+        --select-text: #000000;
+
+        
+    }
+
+    :root[data-theme="dark"] {
+        --bg-primary: 19 19 20;
+        --bg-secondary: 27 27 27;
+        --bg-primary-variant: 27 27 27;
+        --primary: 14 59 90;
+        --white: 255 255 255;
+        --base: 255 255 255;
+        --black: 0 0 0;
+        --select-bg: #131314;
+        --select-text: #FFFFFF;
+    }
+    div {
+        @apply  text-base;
+    }
+    
+    body {
+
+        @apply bg-bgPrimary;
+        
+    }
+    h1 {
+        @apply text-base;
+    }
+
+    h2 {
+        @apply text-base;
+    }
+    h3 {
+        @apply text-base;
+    }
+    h4 {
+        @apply text-base;
+    }
+    h5 {
+        @apply text-base;
+    }
+    h6 {
+        @apply text-base;
+    }
+
+    p {
+        @apply text-base;
+    }
+
+    a {
+        @apply text-base;
+    }
+
+
+    span {
+        @apply text-base;
+    }
+}

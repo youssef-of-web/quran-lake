@@ -41,8 +41,8 @@ export default function AudioPlayer({
       transition={{ duration: 0.5 }}
       className={
         open
-          ? `h-40 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
-          : `h-14 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
+          ? `h-40 fixed bottom-0 bg-slate-150 w-full bg-bgSecondary`
+          : `h-14 fixed bottom-0 bg-slate-150 w-full bg-bgSecondary`
       }
     >
       <div className="relative max-w-2xl mx-auto flex flex-col items-center justify-center gap-4">
@@ -77,19 +77,38 @@ export default function AudioPlayer({
             }
             placeholder={t("changeReciter")}
             options={options}
-            className="w-full"
+            className="w-full bg-bgPrimary text-base "
             menuPlacement="top"
+            
             styles={{
               control: (provided, state) => ({
                 ...provided,
                 boxShadow: "none",
-                border: "none",
+                backgroundColor: "var(--select-bg)",
+              
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: 'text-base',
+              }),
+              option: (provided, state) => ({
+                ...provided,
+                color: state.isSelected ? 'white' : 'var(--select-text)',
+                backgroundColor: state.isSelected ? '#0e3b5a' : 'var(--select-bg)',
+                ":hover": {
+                  backgroundColor: "#0E3C5A6A",
+                },
+
+              }),
+              menu: (provided) => ({
+                ...provided,
+                backgroundColor: 'var(--select-bg)', // Customize this value
               }),
             }}
           />
         </div>
       </div>
-      <div className="absolute top-0 right-0 mt-2 mr-4 w-6 h-6 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center cursor-pointer">
+      <div className="absolute top-0 right-0 mt-2 mr-4 w-6 h-6 rounded-full hover:bg-base/10 bg-bgPrimary  flex items-center justify-center cursor-pointer">
         <div className="m-4">
           {open ? (
             <ArrowDownCircle className={"w-6 h-6"} onClick={handleOpen} />

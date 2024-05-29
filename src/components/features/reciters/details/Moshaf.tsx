@@ -22,11 +22,11 @@ export default function Moshaf({
     <div
       className={classNames(
         "w-full rounded-lg",
-        current === index && "border-2 border-primary rounded-lg"
+        current === index && "border-2 border-base rounded-lg"
       )}
       onClick={() => setCurrent(index)}
     >
-      <div className="min-h-[60px] flex items-center justify-center gap-4 bg-white shadow-xl rounded-lg text-gray-900 cursor-pointer p-2">
+      <div className="min-h-[60px] flex items-center justify-center gap-4 bg-bgPrimary shadow-xl rounded-lg  cursor-pointer p-2">
         <Image src={"/moshaf.png"} width={50} height={50} alt="mushaf" />
         <div className="flex flex-col">
           <div className="flex items-center gap-4">

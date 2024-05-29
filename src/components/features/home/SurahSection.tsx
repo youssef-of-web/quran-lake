@@ -38,14 +38,14 @@ export default function SurahSection({ suwar }: ISurahSection) {
           {suratList?.map((surah) => (
             <div
               key={surah.id}
-              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800"
+              className="rounded-lg border border-base bg-bgPrimary p-4 shadow-sm transition-colors hover:bg-base/5"
             >
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <h3 className="text-lg font-semibold">{surah.name}</h3>
                 </div>
                 <Button onClick={() => PlayAudio(surah)}>
-                  <PlayIcon className="h-6 w-6" />
+                  <PlayIcon className="h-6 w-6 fill-base" />
                 </Button>
               </div>
             </div>

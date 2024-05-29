@@ -23,7 +23,7 @@ export default function Detail({ reciter, surah_list }: IDetail) {
   const t_search = useTranslations("Search");
 
   return (
-    <div className="text-gray-900 rounded-md px-0">
+    <div className=" bg-bgPrimary rounded-md px-0">
       {/* moshaf list */}
       <Hero
         title={`${t("reciter")} ${reciter.name}`}

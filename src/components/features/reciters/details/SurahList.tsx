@@ -69,7 +69,7 @@ export default function Surah_List({
             key={surah.id}
           >
             <div className="w-full">
-              <div className="min-h-[50px] flex flex-col items-center justify-center bg-white shadow-xl rounded-lg text-gray-900 cursor-pointer">
+              <div className="min-h-[50px] flex flex-col items-center justify-center shadow-xl  rounded-lg bg-bgPrimaryVariant   cursor-pointer">
                 <Image
                   src={"/quran-icon.png"}
                   width={40}

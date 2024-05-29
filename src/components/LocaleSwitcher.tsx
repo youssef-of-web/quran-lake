@@ -24,6 +24,13 @@ export default function LocaleSwitcher({}: ILocaleSwitcher) {
       defaultValue={locale}
       disabled={isPending}
       onChange={onChangeLocale}
+      style={{ backgroundColor: 'transparent'
+
+
+
+       }} // Set background color to red
+className="text-base"
+    
     >
       {locales.map((l) => (
         <option value={l} key={l}>

@@ -8,6 +8,7 @@ import { RecitersResponse } from "@/types/Reciter";
 import { getFilteredReciters } from "@/helpers/reciters";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { ThemeProvider } from "@/theme/ThemeProvider";
 import localFont from "next/font/local";
 const arFont = localFont({
   src: "./Rubik-MediumItalic.ttf",
@@ -33,7 +34,11 @@ export default async function RootLayout({
   const data = await getReciters<RecitersResponse>();
   const filteredreciters = getFilteredReciters(data?.reciters!);
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+    <html
+      suppressHydrationWarning
+      lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+    >
       <body
         className={locale === "ar" ? arFont.className : inter.className}
         suppressHydrationWarning={true}
@@ -41,8 +46,15 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col gap-8">
             <AudioWrapper recitersList={filteredreciters!}>
-              <Navbar />
-              {children}
+              <ThemeProvider
+                enableSystem
+                defaultTheme="dark"
+                disableTransitionOnChange
+              >
+                <Navbar />
+
+                {children}
+              </ThemeProvider>
             </AudioWrapper>
           </div>
         </NextIntlClientProvider>

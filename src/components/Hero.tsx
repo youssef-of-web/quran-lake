@@ -17,7 +17,7 @@ export default function Hero({
   onChange,
 }: IHero) {
   return (
-    <div className="text-center bg-gradient-to-r from-slate-500 to-primary h-44 flex items-center justify-center">
+    <div className="text-center bg-gradient-to-r from-[#64748b] to-btnPrimary h-44 flex items-center justify-center">
       <div className="flex flex-col gap-4 w-full">
         <h2 className="text-3xl font-bold text-white">{title}</h2>
         <Search placeholder={placeholder} onChange={onChange} />

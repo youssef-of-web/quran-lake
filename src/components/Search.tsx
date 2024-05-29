@@ -18,7 +18,7 @@ export default function Search({ placeholder, onChange }: ISearch) {
       />
 
       <div className="absolute top-4 right-3">
-        <i className="fa fa-search text-gray-400 z-20 hover:text-gray-500"></i>
+        <i className="fa fa-search z-20"></i>
       </div>
     </div>
   );

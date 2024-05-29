@@ -18,7 +18,7 @@ export default function Search({ placeholder, onChange }: ISearch) {
       />
 
       <div className="absolute top-4 right-3">
-        <i className="fa fa-search z-20"></i>
+        <i className="fa fa-search text-base z-20"></i>
       </div>
     </div>
   );

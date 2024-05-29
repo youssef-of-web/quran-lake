@@ -108,7 +108,7 @@ export default function AudioPlayer({
           />
         </div>
       </div>
-      <div className="absolute top-0 right-0 mt-2 mr-4 w-6 h-6 rounded-full bg-bgPrimary  flex items-center justify-center cursor-pointer">
+      <div className="absolute top-0 right-0 mt-2 mr-4 w-6 h-6 rounded-full hover:bg-base/10 bg-bgPrimary  flex items-center justify-center cursor-pointer">
         <div className="m-4">
           {open ? (
             <ArrowDownCircle className={"w-6 h-6"} onClick={handleOpen} />

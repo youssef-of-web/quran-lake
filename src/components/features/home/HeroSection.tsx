@@ -21,7 +21,7 @@ export default function HeroSection({}: IHeroSection) {
             </p>
           </div>
           <Link href={"/reciters"}>
-            <Button className="inline-flex h-9 items-center justify-center rounded-md bg-btnPrimary text-white px-4 py-2 text-sm font-medium shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50">
+            <Button className=" hover:bg-btnPrimary/80 bg-btnPrimary text-white px-4 py-2 text-sm font-medium shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50">
               {t("startListening")}
             </Button>
           </Link>

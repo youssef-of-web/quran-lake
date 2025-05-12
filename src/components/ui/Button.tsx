@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes } from 'react';
 
 interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

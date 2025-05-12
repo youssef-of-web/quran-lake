@@ -1,9 +1,9 @@
-"use client";
-import { createContext, useState } from "react";
-import { IReciter } from "@/types/Reciter";
-import { Surah } from "@/types/Surah";
-import { generateServerUrlId } from "@/helpers/utils";
-import AudioPlayer from "../AudioPlayer";
+'use client';
+import { createContext, useState } from 'react';
+import { IReciter } from '@/types/Reciter';
+import { Surah } from '@/types/Surah';
+import { generateServerUrlId } from '@/helpers/utils';
+import AudioPlayer from '../AudioPlayer';
 export interface Audio {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -25,7 +25,7 @@ export const AudioWrapper = ({
   recitersList: IReciter[];
 }) => {
   const [open, setOpen] = useState(false);
-  const [server, setServer] = useState<string>("");
+  const [server, setServer] = useState<string>('');
   const [reciter, setReciter] = useState<IReciter | null>(null);
   const [surah, setSurah] = useState<Surah | null>(null);
 

@@ -1,32 +1,60 @@
-"use client";
+'use client';
 
-import Button from "@/components/ui/Button";
-import { Link } from "@/lib/intl";
-import { useTranslations } from "next-intl";
+import Button from '@/components/ui/Button';
+import { Link } from '@/lib/intl';
+import { useTranslations } from 'next-intl';
+import { motion } from 'framer-motion';
 
 interface IHeroSection {}
 
 export default function HeroSection({}: IHeroSection) {
-  const t = useTranslations("Home");
+  const t = useTranslations('Home');
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gray-100 dark:bg-gray-800">
-      <div className="container px-4 md:px-6 mx-auto">
-        <div className="flex flex-col items-center space-y-4 text-center">
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-              {t("title")}
-            </h1>
-            <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-              {t("subtitle")}
-            </p>
+    <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-r from-slate-600 via-slate-500 to-primary">
+      <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10" />
+      <div className="relative z-10 container mx-auto px-4 h-screen flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="text-center space-y-8">
+            <motion.h1
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight drop-shadow-md"
+            >
+              {t('title')}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed"
+            >
+              {t('subtitle')}
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
+            >
+              <Link href="/reciters">
+                <Button className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-primary shadow-lg transition-all hover:scale-105">
+                  <span className="relative z-10 text-lg font-medium">
+                    {t('startListening')}
+                  </span>
+                  <div className="absolute inset-0 bg-gray-100 opacity-0 transition-opacity group-hover:opacity-100" />
+                </Button>
+              </Link>
+            </motion.div>
           </div>
-          <Link href={"/reciters"}>
-            <Button className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
-              {t("startListening")}
-            </Button>
-          </Link>
-        </div>
+        </motion.div>
       </div>
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-700 to-transparent" />
     </section>
   );
 }

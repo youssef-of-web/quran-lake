@@ -1,14 +1,13 @@
-"use client";
-import { Link } from "@/lib/intl";
-import { IReciter } from "@/types/Reciter";
-import { Surah } from "@/types/Surah";
-import { motion } from "framer-motion";
-import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { useState } from "react";
+'use client';
+import { Link } from '@/lib/intl';
+import { IReciter } from '@/types/Reciter';
+import { Surah } from '@/types/Surah';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronUp, Music2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import Select from 'react-select';
 
-import Select from "react-select";
 interface IPlayer {
   reciter: IReciter;
   surah: Surah;
@@ -24,80 +23,117 @@ export default function AudioPlayer({
   recitersList,
   playAudio,
 }: IPlayer) {
-  const options = recitersList.flatMap((r) => {
-    return {
-      label: r.name,
-      value: r.id.toString(),
-    };
-  });
   const [open, setOpen] = useState<boolean>(true);
-  const t = useTranslations("Search");
+  const t = useTranslations('Search');
 
-  const handleOpen = () => setOpen(!open);
+  const options = recitersList.map((r) => ({
+    label: r.name,
+    value: r.id.toString(),
+  }));
+
   return (
-    <motion.div
-      initial={{ y: "100%" }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={
-        open
-          ? `h-40 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
-          : `h-14 fixed bottom-0 bg-slate-150 w-full bg-[#F0F3F4]`
-      }
-    >
-      <div className="relative max-w-2xl mx-auto flex flex-col items-center justify-center gap-4">
-        <Link
-          href={`/reciters/${reciter.id}`}
-          className="flex items-center gap-2"
-        >
-          <Image
-            src={"/reciter.png"}
-            width={25}
-            height={14}
-            alt={reciter.name}
-            className="mt-1"
-          />
-          <p className="text-ellipsis mt-4">
-            {`${reciter.name}- ${surah?.name}`}{" "}
-          </p>
-        </Link>
-        {/* audio */}
-        <audio
-          controls
-          autoPlay={true}
-          src={server}
-          loop
-          className="w-full h-6  bg-slate-150 border-none"
-        ></audio>
-        {/* select */}
-        <div className="w-full px-4">
-          <Select
-            onChange={(e) =>
-              playAudio(surah, recitersList.find((r) => r.id === +e?.value!)!)
-            }
-            placeholder={t("changeReciter")}
-            options={options}
-            className="w-full"
-            menuPlacement="top"
-            styles={{
-              control: (provided, state) => ({
-                ...provided,
-                boxShadow: "none",
-                border: "none",
-              }),
-            }}
-          />
+    <AnimatePresence>
+      <motion.div
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '100%' }}
+        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+        className="fixed bottom-0 w-full bg-gradient-to-r from-slate-600/80 via-slate-500/80 to-primary/80 backdrop-blur-lg shadow-lg"
+        style={{ height: open ? '12rem' : '4rem' }}
+      >
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
+        <div className="relative max-w-3xl mx-auto p-4">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <Link
+                href={`/reciters/${reciter.id}`}
+                className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+              >
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                  <Music2 className="w-5 h-5 text-slate-700" />
+                </div>
+                <div>
+                  <p className="font-medium text-white">{reciter.name}</p>
+                  <p className="text-sm text-slate-200">{surah?.name}</p>
+                </div>
+              </Link>
+
+              <button
+                onClick={() => setOpen(!open)}
+                className="p-2 rounded-full hover:bg-slate-400/20 transition-colors"
+              >
+                {open ? (
+                  <ChevronDown className="w-5 h-5 text-white" />
+                ) : (
+                  <ChevronUp className="w-5 h-5 text-white" />
+                )}
+              </button>
+            </div>
+
+            <motion.div
+              animate={{ opacity: open ? 1 : 0 }}
+              className="space-y-4"
+            >
+              <audio
+                controls
+                autoPlay={true}
+                src={server}
+                loop
+                className="w-full h-12 rounded-lg focus:outline-none"
+              />
+
+              <Select
+                onChange={(e) =>
+                  playAudio(
+                    surah,
+                    recitersList.find((r) => r.id === +e?.value!)!
+                  )
+                }
+                placeholder={t('changeReciter')}
+                options={options}
+                className="w-full"
+                menuPlacement="top"
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderRadius: '0.5rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    boxShadow: 'none',
+                    color: 'white',
+                    '&:hover': {
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                    },
+                  }),
+                  menu: (base) => ({
+                    ...base,
+                    backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                    backdropFilter: 'blur(10px)',
+                  }),
+                  option: (base, state) => ({
+                    ...base,
+                    backgroundColor: state.isFocused
+                      ? 'rgba(255, 255, 255, 0.1)'
+                      : 'transparent',
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: 'white',
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  }),
+                }}
+              />
+            </motion.div>
+          </div>
         </div>
-      </div>
-      <div className="absolute top-0 right-0 mt-2 mr-4 w-6 h-6 rounded-full bg-white hover:bg-gray-200 flex items-center justify-center cursor-pointer">
-        <div className="m-4">
-          {open ? (
-            <ArrowDownCircle className={"w-6 h-6"} onClick={handleOpen} />
-          ) : (
-            <ArrowUpCircle className="w-6 h-6" onClick={handleOpen} />
-          )}
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

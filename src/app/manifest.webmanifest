@@ -21,6 +21,13 @@
       "type": "image/png",
       "form_factor": "wide",
       "label": "Holy Quran App"
+    },
+    {
+      "src": "/icon_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "label": "Holy Quran App",
+      "form_factor": "narrow"
     }
   ],
   "theme_color": "#00563F",

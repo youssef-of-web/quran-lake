@@ -32,7 +32,7 @@ export default function Navbar({}: INavbar) {
       <Link href={'/'} className="flex items-center">
         <motion.p
           whileHover={{ scale: 1.05 }}
-          className="text-xl font-bold text-gray-900 dark:text-white text-ellipsis transition-colors"
+          className="text-base md:text-xl font-bold text-gray-900 dark:text-white text-ellipsis transition-colors truncate max-w-[200px] md:max-w-none"
         >
           {t('logo')}
         </motion.p>

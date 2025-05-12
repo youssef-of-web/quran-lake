@@ -1,11 +1,14 @@
 'use client';
 
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import { Audio, AudioContext } from '../../../context/AudioContext';
 import Image from 'next/image';
 import { IReciter } from '@/types/Reciter';
 import { Surah } from '@/types/Surah';
 import { generateServerUrlId } from '@/helpers/utils';
+import Cookies from 'js-cookie';
+import { HeartIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 
 interface SurahListProps {
   readonly current: number;
@@ -27,6 +30,15 @@ export default function SurahList({
     setSurah,
     surah: activeSurah,
   } = useContext(AudioContext) as Audio;
+
+  const [favorites, setFavorites] = useState<number[]>([]);
+
+  useEffect(() => {
+    const savedFavorites = Cookies.get('favoriteSurahs');
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+  }, []);
 
   const moshaf = reciter?.moshaf![current];
 
@@ -51,6 +63,18 @@ export default function SurahList({
     setSurah(surah);
   };
 
+  const toggleFavorite = (e: React.MouseEvent, surahId: number) => {
+    e.stopPropagation();
+    const newFavorites = favorites.includes(surahId)
+      ? favorites.filter((id) => id !== surahId)
+      : [...favorites, surahId];
+
+    setFavorites(newFavorites);
+    Cookies.set('favoriteSurahs', JSON.stringify(newFavorites), {
+      expires: 365,
+    });
+  };
+
   return (
     <div className="mt-16">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -69,7 +93,19 @@ export default function SurahList({
             `}
           >
             <div className="w-full h-full">
-              <div className="min-h-[60px] p-3 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg">
+              <div className="min-h-[60px] p-3 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg relative">
+                <div className="absolute top-2 right-2">
+                  <button
+                    onClick={(e) => toggleFavorite(e, surah.id)}
+                    className="text-primary hover:text-primary-dark"
+                  >
+                    {favorites.includes(surah.id) ? (
+                      <HeartIconSolid className="h-5 w-5" />
+                    ) : (
+                      <HeartIcon className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
                 <div className="relative">
                   <Image
                     src="/quran-icon.png"

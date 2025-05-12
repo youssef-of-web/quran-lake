@@ -3,7 +3,13 @@ import { Link } from '@/lib/intl';
 import { IReciter } from '@/types/Reciter';
 import { Surah } from '@/types/Surah';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, Music2 } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronUp,
+  Music2,
+  Download,
+  Loader2,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Select from 'react-select';
@@ -24,12 +30,35 @@ export default function AudioPlayer({
   playAudio,
 }: IPlayer) {
   const [open, setOpen] = useState<boolean>(true);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const t = useTranslations('Search');
 
   const options = recitersList.map((r) => ({
     label: r.name,
     value: r.id.toString(),
   }));
+
+  const handleDownload = async () => {
+    if (isDownloading) return;
+
+    setIsDownloading(true);
+    try {
+      const response = await fetch(server);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${reciter.name}-${surah?.name}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Download failed:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -58,16 +87,30 @@ export default function AudioPlayer({
                 </div>
               </Link>
 
-              <button
-                onClick={() => setOpen(!open)}
-                className="p-2 rounded-full hover:bg-slate-400/20 transition-colors"
-              >
-                {open ? (
-                  <ChevronDown className="w-5 h-5 text-white" />
-                ) : (
-                  <ChevronUp className="w-5 h-5 text-white" />
-                )}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleDownload}
+                  disabled={isDownloading}
+                  className="p-2 rounded-full hover:bg-slate-400/20 transition-colors disabled:opacity-50"
+                  title="Download Audio"
+                >
+                  {isDownloading ? (
+                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  ) : (
+                    <Download className="w-5 h-5 text-white" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setOpen(!open)}
+                  className="p-2 rounded-full hover:bg-slate-400/20 transition-colors"
+                >
+                  {open ? (
+                    <ChevronDown className="w-5 h-5 text-white" />
+                  ) : (
+                    <ChevronUp className="w-5 h-5 text-white" />
+                  )}
+                </button>
+              </div>
             </div>
 
             <motion.div

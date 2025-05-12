@@ -35,21 +35,6 @@ export const InstallButton = () => {
     }
   };
 
-  if (isIOS && !isInStandaloneMode) {
-    return (
-      <div className="p-4 bg-yellow-100 border border-yellow-400 rounded text-sm">
-        📱 To install this app on iOS:
-        <ul className="list-disc pl-4 mt-2">
-          <li>
-            Tap the <strong>Share</strong> button in Safari
-          </li>
-          <li>
-            Then select <strong>"Add to Home Screen"</strong>
-          </li>
-        </ul>
-      </div>
-    );
-  }
   return isInstallable ? (
     <button
       onClick={handleInstallClick}

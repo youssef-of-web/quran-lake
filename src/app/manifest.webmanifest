@@ -1,7 +1,6 @@
 {
   "name": "Holy Quran",
   "short_name": "Quran",
-  "form_factor": "wide",
   "icons": [
     {
       "src": "/icon_192x192.png",
@@ -19,13 +18,6 @@
       "src": "/icon_512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "form_factor": "wide",
-      "label": "Holy Quran App"
-    },
-    {
-      "src": "/icon_512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
       "label": "Holy Quran App",
       "form_factor": "narrow"
     }
@@ -34,10 +26,6 @@
   "background_color": "#FFFFFF",
   "start_url": "/",
   "display": "standalone",
-  "prefer_related_applications": false,
-  "orientation": "any",
   "description": "Holy Quran App - Read and Listen to Quran",
-  "categories": ["books", "education", "religious"],
-  "lang": "en",
-  "dir": "ltr"
+  "categories": ["books", "education", "religious"]
 }

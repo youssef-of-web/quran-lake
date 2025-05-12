@@ -9,6 +9,8 @@ const nextConfig = {
 
 const withPwa = withPWA({
   dest: 'public',
+  register: true,
+  skipWaiting: true,
 });
 
 export default withPwa(withNextIntl(nextConfig));

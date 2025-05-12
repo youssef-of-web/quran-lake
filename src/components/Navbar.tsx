@@ -110,13 +110,16 @@ export default function Navbar({}: INavbar) {
         } fixed top-16 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 shadow-lg md:hidden z-40`}
       >
         <div className="flex flex-col gap-3">
-          <Link
-            href={'/reciters'}
-            className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {t('reciters')}
-          </Link>
+          <div className="flex justify-between items-center">
+            <Link
+              href={'/reciters'}
+              className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('reciters')}
+            </Link>
+            <InstallButton />
+          </div>
           <div className="flex justify-between items-center">
             <LocaleSwitcher />
             <Link

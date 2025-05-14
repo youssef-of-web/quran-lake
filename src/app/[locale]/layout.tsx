@@ -8,7 +8,6 @@ import { RecitersResponse } from '@/types/Reciter';
 import { getFilteredReciters } from '@/helpers/reciters';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
-import { PwaProvider } from '@/components/PwaProvider';
 const arFont = Amiri({
   subsets: ['arabic'],
   weight: ['400'],
@@ -46,16 +45,14 @@ export default async function RootLayout({
         className={locale === 'ar' ? arFont.className : inter.className}
         suppressHydrationWarning={true}
       >
-        <PwaProvider>
-          <NextIntlClientProvider messages={messages}>
-            <div className="flex flex-col gap-8">
-              <AudioWrapper recitersList={filteredreciters!}>
-                <Navbar />
-                {children}
-              </AudioWrapper>
-            </div>
-          </NextIntlClientProvider>
-        </PwaProvider>
+        <NextIntlClientProvider messages={messages}>
+          <div className="flex flex-col gap-8">
+            <AudioWrapper recitersList={filteredreciters!}>
+              <Navbar />
+              {children}
+            </AudioWrapper>
+          </div>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

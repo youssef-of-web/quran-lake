@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Amiri, Figtree } from 'next/font/google';
 import '@/styles/globals.css';
 import Navbar from '@/components/Navbar';
 import { AudioWrapper } from '@/components/context/AudioContext';
@@ -8,14 +8,15 @@ import { RecitersResponse } from '@/types/Reciter';
 import { getFilteredReciters } from '@/helpers/reciters';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
-import localFont from 'next/font/local';
 import { PwaProvider } from '@/components/PwaProvider';
-const arFont = localFont({
-  src: './Rubik-MediumItalic.ttf',
+const arFont = Amiri({
+  subsets: ['arabic'],
+  weight: ['400'],
 });
-const inter = Poppins({
+
+const inter = Figtree({
   subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700'],
+  weight: ['400'],
 });
 
 export const metadata: Metadata = {

@@ -29,6 +29,7 @@ export default function SurahList({
     setOpen,
     setSurah,
     surah: activeSurah,
+    setSuratList,
   } = useContext(AudioContext) as Audio;
 
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -61,6 +62,7 @@ export default function SurahList({
     );
     setOpen(true);
     setSurah(surah);
+    setSuratList(availableSurahs);
   };
 
   const toggleFavorite = (e: React.MouseEvent, surahId: number) => {

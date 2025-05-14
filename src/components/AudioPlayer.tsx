@@ -9,9 +9,13 @@ import {
   Music2,
   Download,
   Loader2,
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 
 interface IPlayer {
@@ -20,6 +24,7 @@ interface IPlayer {
   server: string;
   recitersList: IReciter[];
   playAudio: (surah: Surah, reciter: IReciter) => void;
+  surah_list: Surah[];
 }
 
 export default function AudioPlayer({
@@ -28,15 +33,110 @@ export default function AudioPlayer({
   server,
   recitersList,
   playAudio,
+  surah_list,
 }: IPlayer) {
   const [open, setOpen] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const t = useTranslations('Search');
+
+  const currentIndex = surah_list.findIndex((s) => s.id === surah.id);
+
+  const nextSurah =
+    currentIndex < surah_list.length - 1
+      ? surah_list[currentIndex + 1]
+      : undefined;
+
+  const prevSurah = currentIndex > 0 ? surah_list[currentIndex - 1] : undefined;
 
   const options = recitersList.map((r) => ({
     label: r.name,
     value: r.id.toString(),
   }));
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+      setDuration(audio.duration);
+    };
+
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', updateTime);
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', updateTime);
+    };
+  }, []);
+
+  useEffect(() => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: surah?.name,
+        artist: reciter.name,
+        album: 'Quran Recitation',
+        artwork: [
+          {
+            src: '/quran.avif',
+            sizes: '96x96',
+            type: 'image/avif',
+          },
+        ],
+      });
+
+      const updateMediaSessionHandlers = () => {
+        navigator.mediaSession.setActionHandler('play', () => {
+          audioRef.current?.play();
+          setIsPlaying(true);
+        });
+
+        navigator.mediaSession.setActionHandler('pause', () => {
+          audioRef.current?.pause();
+          setIsPlaying(false);
+        });
+
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          if (prevSurah) {
+            playAudio(prevSurah, reciter);
+          }
+        });
+
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          if (nextSurah) {
+            playAudio(nextSurah, reciter);
+          }
+        });
+      };
+
+      updateMediaSessionHandlers();
+
+      if (!open) {
+        updateMediaSessionHandlers();
+      }
+    }
+  }, [reciter, surah, prevSurah, nextSurah, playAudio, open]);
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const handlePlayPause = () => {
+    if (audioRef.current?.paused) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    } else {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+    }
+  };
 
   const handleDownload = async () => {
     if (isDownloading) return;
@@ -68,7 +168,7 @@ export default function AudioPlayer({
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         className="fixed bottom-0 w-full bg-gradient-to-r from-slate-600/80 via-slate-500/80 to-primary/80 backdrop-blur-lg shadow-lg"
-        style={{ height: open ? '12rem' : '4rem' }}
+        style={{ height: open ? '16rem' : '4rem' }}
       >
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
         <div className="relative max-w-3xl mx-auto p-4">
@@ -88,6 +188,18 @@ export default function AudioPlayer({
               </Link>
 
               <div className="flex items-center gap-2">
+                {!open && (
+                  <button
+                    onClick={handlePlayPause}
+                    className="p-2 rounded-full hover:bg-slate-400/20 transition-colors"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-5 h-5 text-white" />
+                    ) : (
+                      <Play className="w-5 h-5 text-white" />
+                    )}
+                  </button>
+                )}
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}
@@ -117,14 +229,6 @@ export default function AudioPlayer({
               animate={{ opacity: open ? 1 : 0 }}
               className="space-y-4"
             >
-              <audio
-                controls
-                autoPlay={true}
-                src={server}
-                loop
-                className="w-full h-12 rounded-lg focus:outline-none"
-              />
-
               <Select
                 onChange={(e) =>
                   playAudio(
@@ -134,7 +238,7 @@ export default function AudioPlayer({
                 }
                 placeholder={t('changeReciter')}
                 options={options}
-                className="w-full"
+                className="w-full mb-4"
                 menuPlacement="top"
                 styles={{
                   control: (base) => ({
@@ -152,6 +256,7 @@ export default function AudioPlayer({
                     ...base,
                     backgroundColor: 'rgba(30, 41, 59, 0.95)',
                     backdropFilter: 'blur(10px)',
+                    zIndex: 50,
                   }),
                   option: (base, state) => ({
                     ...base,
@@ -173,6 +278,72 @@ export default function AudioPlayer({
                   }),
                 }}
               />
+
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  onClick={() => {
+                    if (prevSurah) {
+                      playAudio(prevSurah, reciter);
+                    }
+                  }}
+                  disabled={!prevSurah}
+                  className="p-2 rounded-full hover:bg-slate-400/20 transition-colors disabled:opacity-50"
+                >
+                  <SkipBack className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={handlePlayPause}
+                  className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                >
+                  {isPlaying ? (
+                    <Pause className="w-6 h-6 text-white" />
+                  ) : (
+                    <Play className="w-6 h-6 text-white" />
+                  )}
+                </button>
+                <button
+                  onClick={() => {
+                    if (nextSurah) {
+                      playAudio(nextSurah, reciter);
+                    }
+                  }}
+                  disabled={!nextSurah}
+                  className="p-2 rounded-full hover:bg-slate-400/20 transition-colors disabled:opacity-50"
+                >
+                  <SkipForward className="w-5 h-5 text-white" />
+                </button>
+              </div>
+
+              <div className="relative w-full">
+                <audio
+                  ref={audioRef}
+                  src={server}
+                  loop
+                  className="hidden"
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  autoPlay
+                />
+                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-white/30 hover:bg-white/40 transition-all cursor-pointer"
+                    style={{
+                      width: `${(currentTime / (duration || 1)) * 100}%`,
+                    }}
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const percent = (e.clientX - rect.left) / rect.width;
+                      if (audioRef.current) {
+                        audioRef.current.currentTime = percent * duration;
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex justify-between mt-1 text-xs text-white/70">
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

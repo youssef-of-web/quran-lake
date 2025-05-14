@@ -13,6 +13,8 @@ export interface Audio {
   setReciter: (server: IReciter | null) => void;
   surah: Surah | null;
   setSurah: (server: Surah | null) => void;
+  list_surat?: Surah[];
+  setSuratList: (server: Surah[]) => void;
 }
 
 export const AudioContext = createContext<Audio | null>(null);
@@ -28,6 +30,7 @@ export const AudioWrapper = ({
   const [server, setServer] = useState<string>('');
   const [reciter, setReciter] = useState<IReciter | null>(null);
   const [surah, setSurah] = useState<Surah | null>(null);
+  const [surah_list, setSuratList] = useState<Surah[]>([]);
 
   const PlayAudio = (surah: any, reciter: IReciter) => {
     setReciter(reciter);
@@ -51,6 +54,7 @@ export const AudioWrapper = ({
         setReciter,
         surah,
         setSurah,
+        setSuratList,
       }}
     >
       <div className="min-h-screen pb-24">{children}</div>
@@ -62,6 +66,7 @@ export const AudioWrapper = ({
           surah={surah!}
           recitersList={recitersList}
           playAudio={PlayAudio}
+          surah_list={surah_list}
         />
       )}
     </AudioContext.Provider>

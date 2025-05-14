@@ -13,7 +13,7 @@ interface ISurahSection {
 }
 
 export default function SurahSection({ suwar }: ISurahSection) {
-  const { setReciter, setServer, setOpen, setSurah } = useContext(
+  const { setReciter, setServer, setOpen, setSurah, setSuratList } = useContext(
     AudioContext
   ) as Audio;
   const t = useTranslations('Reciters');
@@ -26,6 +26,7 @@ export default function SurahSection({ suwar }: ISurahSection) {
     setReciter(defaultReciter);
     setOpen(true);
     setSurah(surah);
+    setSuratList(suratList!);
     setServer(
       `${defaultReciter.moshaf[0].server}${generateServerUrlId(
         surah.id.toString()

@@ -6,9 +6,9 @@ import { Suwar } from "@/types/Surah";
 export default async function Component() {
   const suwar = await getSurahList<Suwar>();
   return (
-    <>
+    <main>
       <HeroSection />
       <SurahSection suwar={suwar!} />
-    </>
+    </main>
   );
 }

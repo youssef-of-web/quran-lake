@@ -9,6 +9,7 @@ import { getFilteredReciters } from '@/helpers/reciters';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
 import { PwaProvider } from '@/components/PwaProvider';
+
 const arFont = Amiri({
   subsets: ['arabic'],
   weight: ['400'],
@@ -40,6 +41,7 @@ export default async function RootLayout({
   const messages = await getMessages();
   const data = await getReciters<RecitersResponse>();
   const filteredreciters = getFilteredReciters(data?.reciters!);
+  
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body

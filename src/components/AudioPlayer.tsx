@@ -1,8 +1,8 @@
-'use client';
-import { Link } from '@/lib/intl';
-import { IReciter } from '@/types/Reciter';
-import { Surah } from '@/types/Surah';
-import { motion, AnimatePresence } from 'framer-motion';
+"use client";
+import { Link } from "@/lib/intl";
+import { IReciter } from "@/types/Reciter";
+import { Surah } from "@/types/Surah";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
   ChevronUp,
@@ -13,10 +13,13 @@ import {
   Pause,
   SkipBack,
   SkipForward,
-} from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useState, useEffect, useRef } from 'react';
-import Select from 'react-select';
+  Volume2,
+  Volume1,
+  VolumeX,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState, useEffect, useRef } from "react";
+import Select from "react-select";
 
 interface IPlayer {
   reciter: IReciter;
@@ -41,7 +44,9 @@ export default function AudioPlayer({
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const t = useTranslations('Search');
+  const translation = useTranslations("Search");
+  const [volume, setVolume] = useState<number>(100);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const currentIndex = surah_list.findIndex((s) => s.id === surah.id);
 
@@ -66,48 +71,48 @@ export default function AudioPlayer({
       setDuration(audio.duration);
     };
 
-    audio.addEventListener('timeupdate', updateTime);
-    audio.addEventListener('loadedmetadata', updateTime);
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", updateTime);
 
     return () => {
-      audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateTime);
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", updateTime);
     };
   }, []);
 
   useEffect(() => {
-    if ('mediaSession' in navigator) {
+    if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: surah?.name,
         artist: reciter.name,
-        album: 'Quran Recitation',
+        album: "Quran Recitation",
         artwork: [
           {
-            src: '/quran.avif',
-            sizes: '96x96',
-            type: 'image/avif',
+            src: "/quran.avif",
+            sizes: "96x96",
+            type: "image/avif",
           },
         ],
       });
 
       const updateMediaSessionHandlers = () => {
-        navigator.mediaSession.setActionHandler('play', () => {
+        navigator.mediaSession.setActionHandler("play", () => {
           audioRef.current?.play();
           setIsPlaying(true);
         });
 
-        navigator.mediaSession.setActionHandler('pause', () => {
+        navigator.mediaSession.setActionHandler("pause", () => {
           audioRef.current?.pause();
           setIsPlaying(false);
         });
 
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
+        navigator.mediaSession.setActionHandler("previoustrack", () => {
           if (prevSurah) {
             playAudio(prevSurah, reciter);
           }
         });
 
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
+        navigator.mediaSession.setActionHandler("nexttrack", () => {
           if (nextSurah) {
             playAudio(nextSurah, reciter);
           }
@@ -125,7 +130,7 @@ export default function AudioPlayer({
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handlePlayPause = () => {
@@ -146,7 +151,7 @@ export default function AudioPlayer({
       const response = await fetch(server);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `${reciter.name}-${surah?.name}.mp3`;
       document.body.appendChild(a);
@@ -154,21 +159,49 @@ export default function AudioPlayer({
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
-      console.error('Download failed:', error);
+      console.error("Download failed:", error);
     } finally {
       setIsDownloading(false);
     }
   };
 
+  const VolumeIcon = isMuted ? VolumeX : volume > 50 ? Volume2 : Volume1;
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const NewValue = parseInt(e.target.value, 10);
+    setVolume(NewValue);
+
+    if (audioRef?.current) {
+      audioRef.current.volume = NewValue / 100;
+      if (NewValue === 0) {
+        setIsMuted(true);
+      } else {
+        setIsMuted(false);
+      }
+    }
+  };
+
+  const handleVolumeIconClick = () => {
+    if (audioRef.current) {
+      if (isMuted) {
+        audioRef.current.volume = volume / 100;
+      } else {
+        audioRef.current.volume = 0;
+      }
+    }
+
+    setIsMuted(!isMuted);
+  };
+
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ y: '100%' }}
+        initial={{ y: "100%" }}
         animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
         className="fixed bottom-0 w-full bg-gradient-to-r from-slate-600/80 via-slate-500/80 to-primary/80 backdrop-blur-lg shadow-lg"
-        style={{ height: open ? '16rem' : '4rem' }}
+        style={{ height: open ? "16rem" : "4rem" }}
       >
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
         <div className="relative max-w-3xl mx-auto p-4">
@@ -188,6 +221,28 @@ export default function AudioPlayer({
               </Link>
 
               <div className="flex items-center gap-2">
+                <div className="group relative flex items-center gap-1">
+                  <div
+                    className="w-0 opacity-0 group-hover:w-24 group-hover:opacity-100 transition-all duration-200 overflow-hidden rotate-180"
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={volume}
+                      onChange={handleVolumeChange}
+                      className="w-full h-1.5 bg-gray-300 rounded-full appearance-none cursor-pointer accent-white"
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleVolumeIconClick}
+                    className="p-2 rounded-full hover:bg-slate-400/20 transition-colors focus:outline-none"
+                  >
+                    <VolumeIcon className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+
                 {!open && (
                   <button
                     onClick={handlePlayPause}
@@ -200,6 +255,7 @@ export default function AudioPlayer({
                     )}
                   </button>
                 )}
+
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}
@@ -236,45 +292,45 @@ export default function AudioPlayer({
                     recitersList.find((r) => r.id === +e?.value!)!
                   )
                 }
-                placeholder={t('changeReciter')}
+                placeholder={translation("changeReciter")}
                 options={options}
                 className="w-full mb-4"
                 menuPlacement="top"
                 styles={{
                   control: (base) => ({
                     ...base,
-                    borderRadius: '0.5rem',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    boxShadow: 'none',
-                    color: 'white',
-                    '&:hover': {
-                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                    borderRadius: "0.5rem",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    boxShadow: "none",
+                    color: "white",
+                    "&:hover": {
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
                     },
                   }),
                   menu: (base) => ({
                     ...base,
-                    backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                    backdropFilter: 'blur(10px)',
+                    backgroundColor: "rgba(30, 41, 59, 0.95)",
+                    backdropFilter: "blur(10px)",
                     zIndex: 50,
                   }),
                   option: (base, state) => ({
                     ...base,
                     backgroundColor: state.isFocused
-                      ? 'rgba(255, 255, 255, 0.1)'
-                      : 'transparent',
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "transparent",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
                     },
                   }),
                   singleValue: (base) => ({
                     ...base,
-                    color: 'white',
+                    color: "white",
                   }),
                   placeholder: (base) => ({
                     ...base,
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: "rgba(255, 255, 255, 0.7)",
                   }),
                 }}
               />

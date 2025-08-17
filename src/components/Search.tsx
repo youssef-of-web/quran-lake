@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { ChangeEventHandler, useState } from 'react';
+import { usePathname } from "next/navigation";
+import { ChangeEventHandler, useState } from "react";
 
 interface ISearch {
   placeholder: string;
@@ -8,13 +9,16 @@ interface ISearch {
 }
 
 export default function Search({ placeholder, onChange }: ISearch) {
+  const pathname = usePathname();
+  const locale = pathname.split("/")[1];
+
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="relative px-4 w-full md:w-2/3 mx-auto">
       <div
         className={`relative transition-all duration-300 ${
-          isFocused ? 'transform scale-105' : ''
+          isFocused ? "transform scale-105" : ""
         }`}
       >
         <input
@@ -30,9 +34,11 @@ export default function Search({ placeholder, onChange }: ISearch) {
           onBlur={() => setIsFocused(false)}
         />
         <div
-          className="absolute right-4 top-1/2 -translate-y-1/2 
+          className={`absolute ${
+            locale === 'ar' ? "left-4" : "right-4"
+          } top-1/2 -translate-y-1/2 
                         text-gray-400 transition-colors duration-300 
-                        hover:text-blue-500 cursor-pointer"
+                        hover:text-blue-500 cursor-pointer`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

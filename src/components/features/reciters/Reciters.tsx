@@ -25,8 +25,8 @@ export default function Reciters({ reciters }: IReciters) {
     setText(e.target.value.toLowerCase());
   };
 
-  const t = useTranslations('Reciters');
-  const t_search = useTranslations('Search');
+  const translation = useTranslations('Reciters');
+  const translation_search = useTranslations('Search');
 
   return (
     <motion.div
@@ -35,9 +35,9 @@ export default function Reciters({ reciters }: IReciters) {
       transition={{ duration: 0.5 }}
     >
       <Hero
-        placeholder={t_search('placeholderReciters')}
+        placeholder={translation_search('placeholderReciters')}
         onChange={onChange}
-        title={t('title')}
+        title={translation('title')}
       />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 container mx-auto px-2">
         <AnimatePresence mode="popLayout">

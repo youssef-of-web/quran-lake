@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import Button from '@/components/ui/Button';
-import { Link } from '@/lib/intl';
-import { useTranslations } from 'next-intl';
-import { motion } from 'framer-motion';
+import Button from "@/components/ui/Button";
+import { Link } from "@/lib/intl";
+import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 interface IHeroSection {}
 
 export default function HeroSection({}: IHeroSection) {
-  const t = useTranslations('Home');
+  const translation = useTranslations("Home");
+
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-r from-slate-600 via-slate-500 to-primary">
       <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10" />
@@ -26,7 +27,7 @@ export default function HeroSection({}: IHeroSection) {
               transition={{ delay: 0.2, duration: 0.4 }}
               className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight drop-shadow-md"
             >
-              {t('title')}
+              {translation("title")}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -10 }}
@@ -34,7 +35,7 @@ export default function HeroSection({}: IHeroSection) {
               transition={{ delay: 0.3, duration: 0.4 }}
               className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed"
             >
-              {t('subtitle')}
+              {translation("subtitle")}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -45,7 +46,7 @@ export default function HeroSection({}: IHeroSection) {
               <Link href="/reciters">
                 <Button className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-primary shadow-lg transition-all hover:scale-105">
                   <span className="relative z-10 text-lg font-medium">
-                    {t('startListening')}
+                    {translation("startListening")}
                   </span>
                   <div className="absolute inset-0 bg-gray-100 opacity-0 transition-opacity group-hover:opacity-100" />
                 </Button>

@@ -2,16 +2,23 @@ import { getReciterById, getSurahList } from "@/api";
 import Detail from "@/components/features/reciters/details/Detail";
 import { RecitersResponse } from "@/types/Reciter";
 import { Suwar } from "@/types/Surah";
+import { getMessages } from 'next-intl/server';
 
 import type { Metadata } from "next";
 
 export async function generateMetadata({
-  params: { id },
+  params: { id, locale },
 }: {
-  params: { id: number };
+  params: { id: number; locale: string };
 }): Promise<Metadata> {
+  const messages = await getMessages();
+  const t = messages.Reciters as any;
   const reciter = await getReciterById<RecitersResponse>(id);
-  return { title: reciter?.reciters[0].name };
+
+  return {
+    title: reciter?.reciters[0].name || t?.reciter || 'Reciter',
+    description: `${t?.reciter || 'Reciter'}: ${reciter?.reciters[0].name || ''}`
+  };
 }
 
 export default async function Page({ params }: { params: { id: number } }) {

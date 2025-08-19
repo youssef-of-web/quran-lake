@@ -1,16 +1,18 @@
 {
   "Navigation": {
     "logo": "القرآن الكريم",
-    "reciters": "قراء القرآن"
+    "reciters": "قراء القرآن",
+    "prayerTimes": "أوقات الصلاة"
   },
   "Home": {
-    "title": "استمع إلى القرآن الكريم",
-    "subtitle": "استماع وتحميل القرآن الكريم كاملا بصوت أشهر القراء",
+    "title": "القرآن الكريم",
+    "subtitle": "استمع إلى القرآن الكريم",
     "startListening": "ابدأ الاستماع"
   },
   "Reciters": {
     "title": "قراء القرآن",
     "reciter": "القارئ",
+    "description": "استمع إلى القرآن الكريم",
     "default": {
       "name": "فارس عباد"
     }
@@ -22,5 +24,46 @@
   },
   "Words": {
     "sourah": "سورة"
+  },
+  "PrayerTimes": {
+    "title": "أوقات الصلاة",
+    "subtitle": "أوقات الصلاة لموقعك الحالي",
+    "location": "الموقع",
+    "currentLocation": "الموقع الحالي",
+    "nextPrayer": "الصلاة القادمة",
+    "timeUntil": "الوقت المتبقي",
+    "currentPrayer": "الصلاة الحالية",
+    "loading": "جاري تحميل أوقات الصلاة...",
+    "error": "خطأ في تحميل أوقات الصلاة",
+    "locationError": "تعذر الحصول على موقعك",
+    "permissionError": "يرجى السماح بالوصول إلى الموقع للحصول على أوقات الصلاة",
+    "refresh": "تحديث",
+    "getStarted": "ابدأ",
+    "today": "اليوم",
+    "prayerTime": "حان وقت الصلاة",
+    "prayerTimesForLocation": "أوقات الصلاة لموقعك الحالي",
+    "hijri": "هجري",
+    "adhan": "الأذان",
+    "salat": "الصلاة",
+    "prayers": {
+      "fajr": "الفجر",
+      "sunrise": "الشروق",
+      "dhuhr": "الظهر",
+      "asr": "العصر",
+      "maghrib": "المغرب",
+      "isha": "العشاء"
+    },
+    "cache": {
+      "offlineMode": "وضع عدم الاتصال - استخدام البيانات المخزنة مؤقتاً",
+      "onlineMode": "متصل بالإنترنت",
+      "lastUpdated": "آخر تحديث",
+      "clearCache": "مسح الذاكرة المؤقتة",
+      "refresh": "تحديث",
+      "cachedDataOutdated": "البيانات المخزنة قديمة"
+    },
+    "adhanReminder": "الأذان قبل 5 دقائق",
+    "adhanTime": "وقت الأذان",
+    "prayerTime": "وقت الصلاة",
+    "locationBasedAdhan": "أوقات الأذان حسب الموقع"
   }
 }

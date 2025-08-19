@@ -4,16 +4,16 @@ import { useLocale } from 'next-intl';
 import { ChangeEvent, useTransition } from 'react';
 import { motion } from 'framer-motion';
 
-interface ILocaleSwitcher {}
+interface ILocaleSwitcher { }
 
-export default function LocaleSwitcher({}: ILocaleSwitcher) {
+export default function LocaleSwitcher({ }: ILocaleSwitcher) {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const onChangeLocale = (e: ChangeEvent<HTMLSelectElement>) => {
-    const nextLocale = e.target.value;
+    const nextLocale = e.target.value as typeof locales[number];
     startTransition(() => {
       router.replace(pathname, { locale: nextLocale });
     });

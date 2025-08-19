@@ -1,16 +1,18 @@
 {
   "Navigation": {
     "logo": "The holy quran",
-    "reciters": "Reciters"
+    "reciters": "Reciters",
+    "prayerTimes": "Prayer Times"
   },
   "Home": {
-    "title": "Listen to the Holy Quran",
-    "subtitle": "Listen and download the Holy Quran in the voice of the most famous reciters",
+    "title": "The Holy Quran",
+    "subtitle": "Listen to the Holy Quran",
     "startListening": "Start Listening"
   },
   "Reciters": {
     "title": "Reciters",
     "reciter": "Reciter",
+    "description": "Listen to the holy quran",
     "default": {
       "name": "Fares Abbad"
     }
@@ -22,5 +24,46 @@
   },
   "Words": {
     "sourah": "sourah"
+  },
+  "PrayerTimes": {
+    "title": "Prayer Times",
+    "subtitle": "Prayer times for your current location",
+    "location": "Location",
+    "currentLocation": "Current Location",
+    "nextPrayer": "Next Prayer",
+    "timeUntil": "Time until",
+    "currentPrayer": "Current Prayer",
+    "loading": "Loading prayer times...",
+    "error": "Error loading prayer times",
+    "locationError": "Unable to get your location",
+    "permissionError": "Please allow location access to get prayer times",
+    "refresh": "Refresh",
+    "getStarted": "Get Started",
+    "today": "Today",
+    "prayerTime": "Prayer Time",
+    "prayerTimesForLocation": "Prayer times for your current location",
+    "hijri": "Hijri",
+    "adhan": "Adhan",
+    "salat": "Salat",
+    "prayers": {
+      "fajr": "Fajr",
+      "sunrise": "Sunrise",
+      "dhuhr": "Dhuhr",
+      "asr": "Asr",
+      "maghrib": "Maghrib",
+      "isha": "Isha"
+    },
+    "cache": {
+      "offlineMode": "Offline Mode - Using Cached Data",
+      "onlineMode": "Online Mode",
+      "lastUpdated": "Last updated",
+      "clearCache": "Clear Cache",
+      "refresh": "Refresh",
+      "cachedDataOutdated": "Cached data is outdated"
+    },
+    "adhanReminder": "Adhan 5 min before",
+    "adhanTime": "Adhan Time",
+    "prayerTime": "Prayer Time",
+    "locationBasedAdhan": "Location-based adhan times"
   }
 }

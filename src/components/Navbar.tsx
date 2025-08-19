@@ -8,9 +8,9 @@ import { motion, useScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { InstallButton } from './Install';
 
-interface INavbar {}
+interface INavbar { }
 
-export default function Navbar({}: INavbar) {
+export default function Navbar({ }: INavbar) {
   const t = useTranslations('Navigation');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -35,9 +35,8 @@ export default function Navbar({}: INavbar) {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className={`px-4 lg:px-6 h-16 flex items-center justify-between backdrop-blur-sm bg-white/70 dark:bg-slate-900/70 w-full z-50 border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300 ${
-        isScrolled ? 'fixed top-0 left-0 right-0 shadow-md' : 'relative'
-      }`}
+      className={`px-4 lg:px-6 h-16 flex items-center justify-between backdrop-blur-sm bg-white/70 dark:bg-slate-900/70 w-full z-50 border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0 shadow-md' : 'relative'
+        }`}
     >
       {/* Logo */}
       <Link href={'/'} className="flex items-center">
@@ -59,6 +58,14 @@ export default function Navbar({}: INavbar) {
             className="bg-primary text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             {t('reciters')}
+          </motion.p>
+        </Link>
+        <Link href={'/prayer-times'}>
+          <motion.p
+            whileHover={{ scale: 1.05 }}
+            className="bg-green-600 text-white rounded-md px-3 py-2 text-sm font-medium hover:bg-green-700 transition-colors"
+          >
+            {t('prayerTimes')}
           </motion.p>
         </Link>
         <motion.div
@@ -105,9 +112,8 @@ export default function Navbar({}: INavbar) {
         initial={{ opacity: 0, y: -20 }}
         animate={mobileMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        className={`${
-          mobileMenuOpen ? 'block' : 'hidden'
-        } fixed top-16 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 shadow-lg md:hidden z-40`}
+        className={`${mobileMenuOpen ? 'block' : 'hidden'
+          } fixed top-16 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 shadow-lg md:hidden z-40`}
       >
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
@@ -121,7 +127,16 @@ export default function Navbar({}: INavbar) {
             <InstallButton />
           </div>
           <div className="flex justify-between items-center">
+            <Link
+              href={'/prayer-times'}
+              className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('prayerTimes')}
+            </Link>
             <LocaleSwitcher />
+          </div>
+          <div className="flex justify-center">
             <Link
               href={'https://github.com/youssef-of-web/quran-lake '}
               target="_blank"

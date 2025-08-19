@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings as SettingsIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import LocaleSwitcher from './LocaleSwitcher';
 import ThemeToggle from './ThemeToggle';
 
 export default function Settings() {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations('Settings');
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
 
   return (
     <div className="relative">
@@ -44,7 +46,10 @@ export default function Settings() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 top-full mt-2 w-64 rounded-lg bg-white dark:bg-slate-800 shadow-lg border border-gray-200 dark:border-slate-700 z-50 overflow-hidden"
+              className={`absolute top-full mt-2 w-64 rounded-lg bg-white dark:bg-slate-800 shadow-lg border border-gray-200 dark:border-slate-700 z-50 overflow-hidden ${isRTL
+                ? 'left-0 md:left-0 md:right-auto'
+                : 'right-0 md:right-0 md:left-auto'
+                }`}
             >
               <div className="p-4 space-y-4">
                 {/* Header */}

@@ -29,7 +29,7 @@ export default function Moshaf({
       )}
       onClick={() => setCurrent(index)}
     >
-      <div className="min-h-[60px] flex items-center justify-between px-4 py-3 bg-white shadow-sm rounded-lg text-gray-900 cursor-pointer">
+      <div className="min-h-[60px] flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-800 shadow-sm rounded-lg text-gray-900 dark:text-gray-100 cursor-pointer">
         <div className="flex items-center gap-4">
           <Image
             src="/moshaf.png"
@@ -39,7 +39,7 @@ export default function Moshaf({
             className="object-contain"
           />
           <div className="flex flex-col gap-1">
-            <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{name}</h3>
             <div className="flex items-center gap-2 text-primary font-medium">
               <span>{surah_total}</span>
               <span>{t('sourah')}</span>

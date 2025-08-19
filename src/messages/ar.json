@@ -65,5 +65,15 @@
     "adhanTime": "وقت الأذان",
     "prayerTime": "وقت الصلاة",
     "locationBasedAdhan": "أوقات الأذان حسب الموقع"
+  },
+  "Settings": {
+    "title": "الإعدادات",
+    "subtitle": "خصص تجربتك",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "comingSoon": "المزيد من الإعدادات قريباً..."
   }
 }

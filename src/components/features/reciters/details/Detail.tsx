@@ -28,7 +28,7 @@ export default function Detail({ reciter, surah_list }: DetailProps) {
   );
 
   return (
-    <section className="min-h-screen bg-white text-gray-900">
+    <section className="min-h-screen bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100">
       <Hero
         title={`${t('reciter')} ${reciter.name}`}
         placeholder={t_search('placeholderSurah')}

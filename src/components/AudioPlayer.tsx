@@ -167,10 +167,10 @@ export default function AudioPlayer({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-        className="fixed bottom-0 w-full bg-gradient-to-r from-slate-600/80 via-slate-500/80 to-primary/80 backdrop-blur-lg shadow-lg"
+        className="fixed bottom-0 w-full bg-gradient-to-r from-slate-600/80 via-slate-500/80 to-primary/80 dark:from-slate-800/95 dark:via-slate-700/95 dark:to-slate-900/95 backdrop-blur-lg shadow-lg"
         style={{ height: open ? '16rem' : '4rem' }}
       >
-        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5 dark:opacity-3" />
         <div className="relative max-w-3xl mx-auto p-4">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
@@ -178,8 +178,8 @@ export default function AudioPlayer({
                 href={`/reciters/${reciter.id}`}
                 className="flex items-center gap-3 hover:opacity-80 transition-opacity"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-                  <Music2 className="w-5 h-5 text-slate-700" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center">
+                  <Music2 className="w-5 h-5 text-slate-700 dark:text-gray-300" />
                 </div>
                 <div>
                   <p className="font-medium text-white">{reciter.name}</p>
@@ -257,6 +257,7 @@ export default function AudioPlayer({
                     backgroundColor: 'rgba(30, 41, 59, 0.95)',
                     backdropFilter: 'blur(10px)',
                     zIndex: 50,
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                   }),
                   option: (base, state) => ({
                     ...base,

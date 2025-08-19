@@ -5,14 +5,14 @@ import { Link } from '@/lib/intl';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 
-interface IHeroSection {}
+interface IHeroSection { }
 
-export default function HeroSection({}: IHeroSection) {
+export default function HeroSection({ }: IHeroSection) {
   const t = useTranslations('Home');
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-r from-slate-600 via-slate-500 to-primary">
-      <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10" />
-      <div className="relative z-10 container mx-auto px-4 h-screen flex items-center justify-center">
+    <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-r from-slate-600 via-slate-500 to-primary dark:from-slate-800 dark:via-slate-700 dark:to-slate-900">
+      <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10 dark:opacity-5" />
+      <div className="relative z-20 container mx-auto px-4 h-screen flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export default function HeroSection({}: IHeroSection) {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight drop-shadow-md"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white dark:text-gray-100 tracking-tight drop-shadow-md"
             >
               {t('title')}
             </motion.h1>
@@ -32,7 +32,7 @@ export default function HeroSection({}: IHeroSection) {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
-              className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed"
+              className="text-lg md:text-xl text-gray-200 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed"
             >
               {t('subtitle')}
             </motion.p>
@@ -43,18 +43,18 @@ export default function HeroSection({}: IHeroSection) {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
             >
               <Link href="/reciters">
-                <Button className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-primary shadow-lg transition-all hover:scale-105">
+                <Button className="group relative overflow-hidden rounded-full bg-white dark:bg-gray-800 px-8 py-4 text-primary dark:text-blue-400 shadow-lg transition-all hover:scale-105 dark:hover:bg-gray-700">
                   <span className="relative z-10 text-lg font-medium">
                     {t('startListening')}
                   </span>
-                  <div className="absolute inset-0 bg-gray-100 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-gray-100 dark:bg-gray-600 opacity-0 transition-opacity group-hover:opacity-100" />
                 </Button>
               </Link>
             </motion.div>
           </div>
         </motion.div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-700 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-700 dark:from-slate-800 to-transparent" />
     </section>
   );
 }

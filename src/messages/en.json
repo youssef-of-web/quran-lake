@@ -65,5 +65,15 @@
     "adhanTime": "Adhan Time",
     "prayerTime": "Prayer Time",
     "locationBasedAdhan": "Location-based adhan times"
+  },
+  "Settings": {
+    "title": "Settings",
+    "subtitle": "Customize your experience",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "comingSoon": "More settings coming soon..."
   }
 }

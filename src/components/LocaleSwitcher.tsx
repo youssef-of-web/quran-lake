@@ -4,9 +4,11 @@ import { useLocale } from 'next-intl';
 import { ChangeEvent, useTransition } from 'react';
 import { motion } from 'framer-motion';
 
-interface ILocaleSwitcher { }
+interface ILocaleSwitcher {
+  variant?: 'default' | 'settings';
+}
 
-export default function LocaleSwitcher({ }: ILocaleSwitcher) {
+export default function LocaleSwitcher({ variant = 'default' }: ILocaleSwitcher) {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -19,6 +21,30 @@ export default function LocaleSwitcher({ }: ILocaleSwitcher) {
     });
   };
 
+  if (variant === 'settings') {
+    return (
+      <select
+        defaultValue={locale}
+        disabled={isPending}
+        onChange={onChangeLocale}
+        className="w-full appearance-none bg-transparent border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 
+                   hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 
+                   transition-all duration-200 cursor-pointer
+                   text-gray-700 dark:text-gray-200 text-sm"
+      >
+        {locales.map((l) => (
+          <option
+            value={l}
+            key={l}
+            className="bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200"
+          >
+            {l.toUpperCase()}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -30,16 +56,16 @@ export default function LocaleSwitcher({ }: ILocaleSwitcher) {
         defaultValue={locale}
         disabled={isPending}
         onChange={onChangeLocale}
-        className="appearance-none bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-[6px] pr-8 
+        className="appearance-none bg-transparent border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-[6px] pr-8 
                    hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 
                    transition-all duration-200 cursor-pointer
-                   text-gray-700 dark:text-gray-200"
+                   text-gray-700 dark:text-gray-200 bg-white/10 dark:bg-slate-800/10"
       >
         {locales.map((l) => (
           <option
             value={l}
             key={l}
-            className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
+            className="bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200"
           >
             {l.toUpperCase()}
           </option>

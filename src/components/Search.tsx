@@ -13,17 +13,17 @@ export default function Search({ placeholder, onChange }: ISearch) {
   return (
     <div className="relative px-4 w-full md:w-2/3 mx-auto">
       <div
-        className={`relative transition-all duration-300 ${
-          isFocused ? 'transform scale-105' : ''
-        }`}
+        className={`relative transition-all duration-300 ${isFocused ? 'transform scale-105' : ''
+          }`}
       >
         <input
           type="text"
-          className="h-12 w-full px-5 py-3 rounded-full bg-white/90 backdrop-blur-sm
-                     border border-gray-200 shadow-sm
+          className="h-12 w-full px-5 py-3 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm
+                     border border-gray-200 dark:border-slate-600 shadow-sm
                      transition-all duration-300 ease-in-out
-                     focus:outline-none focus:border-blue-500
-                     placeholder:text-gray-400"
+                     focus:outline-none focus:border-blue-500 dark:focus:border-blue-400
+                     placeholder:text-gray-400 dark:placeholder:text-gray-500
+                     text-gray-900 dark:text-gray-100"
           placeholder={placeholder}
           onChange={onChange}
           onFocus={() => setIsFocused(true)}
@@ -31,8 +31,8 @@ export default function Search({ placeholder, onChange }: ISearch) {
         />
         <div
           className="absolute right-4 top-1/2 -translate-y-1/2 
-                        text-gray-400 transition-colors duration-300 
-                        hover:text-blue-500 cursor-pointer"
+                        text-gray-400 dark:text-gray-500 transition-colors duration-300 
+                        hover:text-blue-500 dark:hover:text-blue-400 cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

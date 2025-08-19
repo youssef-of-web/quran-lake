@@ -79,7 +79,7 @@ export default function SurahSection({ suwar }: ISurahSection) {
               key={surah.id}
               variants={itemVariants}
               whileHover="hover"
-              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950"
+              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800"
             >
               <div className="flex items-center justify-between">
                 <motion.div className="space-y-1" whileHover={{ x: 5 }}>

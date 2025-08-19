@@ -38,10 +38,10 @@ export const InstallButton = () => {
   return isInstallable ? (
     <button
       onClick={handleInstallClick}
-      className="appearance-none bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-[6px] 
+      className="appearance-none bg-transparent border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-[6px] 
                    hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 
                    transition-all duration-200 cursor-pointer
-                   text-gray-700 dark:text-gray-200"
+                   text-gray-700 dark:text-gray-200 bg-white/10 dark:bg-slate-800/10"
     >
       <div className="flex items-center">
         <span>📲</span>

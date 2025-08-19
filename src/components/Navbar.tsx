@@ -2,11 +2,11 @@
 
 import { Link } from '@/lib/intl';
 import { useTranslations } from 'next-intl';
-import LocaleSwitcher from './LocaleSwitcher';
 import { Github } from 'lucide-react';
 import { motion, useScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { InstallButton } from './Install';
+import Settings from './Settings';
 
 interface INavbar { }
 
@@ -35,7 +35,7 @@ export default function Navbar({ }: INavbar) {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className={`px-4 lg:px-6 h-16 flex items-center justify-between backdrop-blur-sm bg-white/70 dark:bg-slate-900/70 w-full z-50 border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0 shadow-md' : 'relative'
+      className={`px-4 lg:px-6 h-16 flex items-center justify-between backdrop-blur-sm bg-white/70 dark:bg-slate-800/90 w-full z-50 border-b border-gray-200 dark:border-slate-700 shadow-sm transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0 shadow-md' : 'relative'
         }`}
     >
       {/* Logo */}
@@ -51,7 +51,6 @@ export default function Navbar({ }: INavbar) {
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-4">
         <InstallButton />
-        <LocaleSwitcher />
         <Link href={'/reciters'}>
           <motion.p
             whileHover={{ scale: 1.05 }}
@@ -113,7 +112,7 @@ export default function Navbar({ }: INavbar) {
         animate={mobileMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         className={`${mobileMenuOpen ? 'block' : 'hidden'
-          } fixed top-16 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 shadow-lg md:hidden z-40`}
+          } fixed top-16 left-0 right-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-4 shadow-lg md:hidden z-40`}
       >
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
@@ -134,7 +133,7 @@ export default function Navbar({ }: INavbar) {
             >
               {t('prayerTimes')}
             </Link>
-            <LocaleSwitcher />
+            <Settings />
           </div>
           <div className="flex justify-center">
             <Link

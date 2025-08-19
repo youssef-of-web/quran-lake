@@ -50,8 +50,8 @@ export default function SurahList({
 
     return text
       ? surahs.filter((surah) =>
-          surah.name.toLowerCase().includes(text.toLowerCase())
-        )
+        surah.name.toLowerCase().includes(text.toLowerCase())
+      )
       : surahs;
   }, [surah_list, moshaf.surah_list, text]);
 
@@ -87,15 +87,14 @@ export default function SurahList({
             className={`
               group transition-all duration-300 ease-in-out
               hover:scale-105 hover:shadow-2xl rounded-lg cursor-pointer
-              ${
-                activeSurah?.id === surah.id
-                  ? 'ring-2 ring-primary ring-offset-2'
-                  : ''
+              ${activeSurah?.id === surah.id
+                ? 'ring-2 ring-primary ring-offset-2'
+                : ''
               }
             `}
           >
             <div className="w-full h-full">
-              <div className="min-h-[60px] p-3 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg relative">
+              <div className="min-h-[60px] p-3 flex flex-col items-center justify-center bg-white dark:bg-slate-800 rounded-lg shadow-lg relative">
                 <div className="absolute top-2 right-2">
                   <button
                     onClick={(e) => toggleFavorite(e, surah.id)}
@@ -120,7 +119,7 @@ export default function SurahList({
                     {surah.id}
                   </span>
                 </div>
-                <p className="mt-2 text-sm font-medium text-gray-800">
+                <p className="mt-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                   {surah.name}
                 </p>
               </div>

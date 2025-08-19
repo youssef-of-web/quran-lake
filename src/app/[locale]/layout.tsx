@@ -67,7 +67,9 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
-            <FloatingSettings />
+            <div className="hidden md:block">
+              <FloatingSettings />
+            </div>
             <div className="flex flex-col gap-8">
               <AudioWrapper recitersList={filteredreciters!}>
                 <Navbar />

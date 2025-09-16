@@ -13,6 +13,7 @@ import {
   Pause,
   SkipBack,
   SkipForward,
+  Gauge,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
@@ -40,7 +41,10 @@ export default function AudioPlayer({
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
+  const [showSpeedOptions, setShowSpeedOptions] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const speedMenuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('Search');
 
   const currentIndex = surah_list.findIndex((s) => s.id === surah.id);
@@ -73,6 +77,23 @@ export default function AudioPlayer({
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateTime);
     };
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = playbackSpeed;
+    }
+  }, [playbackSpeed]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (speedMenuRef.current && !speedMenuRef.current.contains(event.target as Node)) {
+        setShowSpeedOptions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -160,6 +181,13 @@ export default function AudioPlayer({
     }
   };
 
+  const speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+
+  const handleSpeedChange = (speed: number) => {
+    setPlaybackSpeed(speed);
+    setShowSpeedOptions(false);
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -212,6 +240,42 @@ export default function AudioPlayer({
                     <Download className="w-5 h-5 text-white" />
                   )}
                 </button>
+                <div className="relative" ref={speedMenuRef}>
+                  <button
+                    onClick={() => setShowSpeedOptions(!showSpeedOptions)}
+                    className="p-2 rounded-full hover:bg-slate-400/20 transition-colors flex items-center gap-1"
+                    title="Playback Speed"
+                  >
+                    <Gauge className="w-5 h-5 text-white" />
+                    <span className="text-xs text-white">{playbackSpeed}x</span>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {showSpeedOptions && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute bottom-full mb-2 right-0 bg-slate-800/95 backdrop-blur-lg rounded-lg shadow-xl border border-slate-600/30 py-2 min-w-[80px]"
+                      >
+                        {speedOptions.map((speed) => (
+                          <button
+                            key={speed}
+                            onClick={() => handleSpeedChange(speed)}
+                            className={`w-full px-4 py-2 text-sm text-left hover:bg-slate-700/50 transition-colors ${
+                              playbackSpeed === speed
+                                ? 'text-white bg-slate-700/30'
+                                : 'text-slate-300'
+                            }`}
+                          >
+                            {speed}x
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
                 <button
                   onClick={() => setOpen(!open)}
                   className="p-2 rounded-full hover:bg-slate-400/20 transition-colors"

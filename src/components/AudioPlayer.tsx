@@ -170,7 +170,6 @@ export default function AudioPlayer({
         className="fixed bottom-0 w-full bg-gradient-to-r from-slate-600/80 via-slate-500/80 to-primary/80 dark:from-slate-800/95 dark:via-slate-700/95 dark:to-slate-900/95 backdrop-blur-lg shadow-lg"
         style={{ height: open ? '16rem' : '4rem' }}
       >
-        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5 dark:opacity-3" />
         <div className="relative max-w-3xl mx-auto p-4">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">

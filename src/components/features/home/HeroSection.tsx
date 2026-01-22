@@ -11,7 +11,6 @@ export default function HeroSection({ }: IHeroSection) {
   const t = useTranslations('Home');
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-r from-slate-600 via-slate-500 to-primary dark:from-slate-800 dark:via-slate-700 dark:to-slate-900">
-      <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10 dark:opacity-5" />
       <div className="relative z-20 container mx-auto px-4 h-screen flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

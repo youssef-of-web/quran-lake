@@ -55,6 +55,23 @@ export default function SurahList({
       : surahs;
   }, [surah_list, moshaf.surah_list, text]);
 
+  // Infinite Scroll Logic
+  const [visibleCount, setVisibleCount] = useState(24);
+
+  useEffect(() => {
+    setVisibleCount(24);
+  }, [text, reciter.id, current]);
+
+  const visibleSurahs = useMemo(() => {
+    return availableSurahs.slice(0, visibleCount);
+  }, [availableSurahs, visibleCount]);
+
+  const loadMore = () => {
+    if (visibleCount < availableSurahs.length) {
+      setVisibleCount(prev => Math.min(prev + 24, availableSurahs.length));
+    }
+  };
+
   const handlePlayAudio = (surah: Surah) => {
     setReciter(reciter);
     setServer(
@@ -80,7 +97,7 @@ export default function SurahList({
   return (
     <div className="mt-16">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {availableSurahs.map((surah) => (
+        {visibleSurahs.map((surah) => (
           <div
             key={surah.id}
             onClick={() => handlePlayAudio(surah)}
@@ -126,6 +143,26 @@ export default function SurahList({
             </div>
           </div>
         ))}
+        {/* Infinite scroll sentinel */}
+        {visibleCount < availableSurahs.length && (
+          <div
+            className="col-span-full h-10 w-full"
+            ref={(el) => {
+              if (el) {
+                const observer = new IntersectionObserver(
+                  (entries) => {
+                    if (entries[0].isIntersecting) {
+                      loadMore();
+                    }
+                  },
+                  { rootMargin: '200px' }
+                );
+                observer.observe(el);
+                return () => observer.disconnect();
+              }
+            }}
+          />
+        )}
       </div>
     </div>
   );

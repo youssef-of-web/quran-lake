@@ -18,7 +18,7 @@ export default function Navbar({ }: INavbar) {
 
   // Scroll effect
   useEffect(() => {
-    return scrollY.onChange((latest) => {
+    return scrollY.on('change', (latest) => {
       setIsScrolled(latest > 0);
     });
   }, [scrollY]);

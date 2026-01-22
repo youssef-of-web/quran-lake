@@ -5,11 +5,12 @@ import Navbar from '@/components/Navbar';
 import { AudioWrapper } from '@/components/context/AudioContext';
 import { ThemeProvider } from '@/components/context/ThemeContext';
 import FloatingSettings from '@/components/FloatingSettings';
-import { getReciters } from '@/api';
+import { fetchReciters } from '@/lib/api-fetch';
 import { RecitersResponse } from '@/types/Reciter';
 import { getFilteredReciters } from '@/helpers/reciters';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
+
 const arFont = Amiri({
   subsets: ['arabic'],
   weight: ['400'],
@@ -39,10 +40,11 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   const messages = await getMessages();
-  const data = await getReciters<RecitersResponse>();
+  // using native fetch with caching
+  const data = await fetchReciters<RecitersResponse>(locale);
   const filteredreciters = getFilteredReciters(data?.reciters!);
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

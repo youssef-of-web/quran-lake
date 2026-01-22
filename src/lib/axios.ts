@@ -8,18 +8,10 @@ export const axiosInstance = axios.create({
   },
 });
 
-// Add request interceptor for better error handling
+// Request interceptor for error handling (removed cache-busting timestamp for better caching)
 axiosInstance.interceptors.request.use(
-  (config) => {
-    // Add timestamp to prevent caching issues
-    if (config.method === 'get') {
-      config.params = { ...config.params, _t: Date.now() };
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (config) => config,
+  (error) => Promise.reject(error)
 );
 
 // Add response interceptor for better error handling

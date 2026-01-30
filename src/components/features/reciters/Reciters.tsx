@@ -2,7 +2,7 @@
 import { IReciter } from '@/types/Reciter';
 import Reciter from './Reciter';
 import Hero from '../../Hero';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,7 +14,7 @@ export default function Reciters({ reciters }: IReciters) {
   const [text, setText] = useState<string>('');
   const [visibleCount, setVisibleCount] = useState(24);
 
-  const filetredReciters = useMemo(() => {
+  const filteredReciters = useMemo(() => {
     if (text != '') {
       return reciters.filter((reciter) =>
         reciter.name.toLowerCase().includes(text)
@@ -24,23 +24,44 @@ export default function Reciters({ reciters }: IReciters) {
   }, [text, reciters]); // Added dependency reciters
 
   // Reset visible count when search text changes
-  useMemo(() => {
+  useEffect(() => {
     setVisibleCount(24);
   }, [text]);
 
   const visibleReciters = useMemo(() => {
-    return filetredReciters.slice(0, visibleCount);
-  }, [filetredReciters, visibleCount]);
+    return filteredReciters.slice(0, visibleCount);
+  }, [filteredReciters, visibleCount]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value.toLowerCase());
   };
 
-  const loadMore = () => {
-    if (visibleCount < filetredReciters.length) {
-      setVisibleCount(prev => Math.min(prev + 24, filetredReciters.length));
+  const loadMore = useCallback(() => {
+    if (visibleCount < filteredReciters.length) {
+      setVisibleCount(prev => Math.min(prev + 24, filteredReciters.length));
     }
-  };
+  }, [filteredReciters.length, visibleCount]);
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || visibleCount >= filteredReciters.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { rootMargin: '100px' }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [loadMore, filteredReciters.length, visibleCount]);
 
   const t = useTranslations('Reciters');
   const t_search = useTranslations('Search');
@@ -73,23 +94,12 @@ export default function Reciters({ reciters }: IReciters) {
         </AnimatePresence>
 
         {/* Infinite scroll sentinel */}
-        <div
-          ref={(el) => {
-            if (el) {
-              const observer = new IntersectionObserver(
-                (entries) => {
-                  if (entries[0].isIntersecting && visibleCount < filetredReciters.length) {
-                    loadMore();
-                  }
-                },
-                { rootMargin: '100px' }
-              );
-              observer.observe(el);
-              return () => observer.disconnect();
-            }
-          }}
-          className="col-span-full h-10 w-full"
-        />
+        {visibleCount < filteredReciters.length && (
+          <div
+            ref={sentinelRef}
+            className="col-span-full h-10 w-full"
+          />
+        )}
       </div>
     </motion.div>
   );

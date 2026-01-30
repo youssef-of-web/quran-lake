@@ -14,8 +14,6 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   };
 }
 
-export const revalidate = 3600; // Cache for 1 hour
-
 export default function Component() {
   // Use static data directly - 0ms latency
   const suwar = { suwar: SurahData };

@@ -16,18 +16,26 @@ async function apiFetch<T>(
 ): Promise<T> {
     const { revalidate = 3600, tags } = options;
 
-    const res = await fetch(`${API_BASE}/${endpoint}`, {
-        next: {
-            revalidate,
-            ...(tags && { tags })
+    try {
+        const res = await fetch(`${API_BASE}/${endpoint}`, {
+            next: {
+                revalidate,
+                ...(tags && { tags })
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error(`API error: ${res.status}`);
         }
-    });
 
-    if (!res.ok) {
-        throw new Error(`API error: ${res.status}`);
+        return res.json();
+    } catch (error) {
+        console.error(`Failed to fetch API endpoint "${endpoint}"`, error);
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error('Unknown error occurred while fetching API data');
     }
-
-    return res.json();
 }
 
 /**

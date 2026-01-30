@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useMemo, useState, useEffect } from 'react';
+import { useContext, useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { Audio, AudioContext } from '../../../context/AudioContext';
 import Image from 'next/image';
 import { IReciter } from '@/types/Reciter';
@@ -66,11 +66,32 @@ export default function SurahList({
     return availableSurahs.slice(0, visibleCount);
   }, [availableSurahs, visibleCount]);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (visibleCount < availableSurahs.length) {
       setVisibleCount(prev => Math.min(prev + 24, availableSurahs.length));
     }
-  };
+  }, [availableSurahs.length, visibleCount]);
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || visibleCount >= availableSurahs.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [loadMore, availableSurahs.length, visibleCount]);
 
   const handlePlayAudio = (surah: Surah) => {
     setReciter(reciter);
@@ -147,20 +168,7 @@ export default function SurahList({
         {visibleCount < availableSurahs.length && (
           <div
             className="col-span-full h-10 w-full"
-            ref={(el) => {
-              if (el) {
-                const observer = new IntersectionObserver(
-                  (entries) => {
-                    if (entries[0].isIntersecting) {
-                      loadMore();
-                    }
-                  },
-                  { rootMargin: '200px' }
-                );
-                observer.observe(el);
-                return () => observer.disconnect();
-              }
-            }}
+            ref={sentinelRef}
           />
         )}
       </div>

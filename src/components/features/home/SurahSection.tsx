@@ -1,6 +1,6 @@
 'use client';
 import { Audio, AudioContext } from '../../context/AudioContext';
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { defaultReciter } from '@/data/data';
 import { Suwar } from '@/types/Surah';
 import Button from '../../ui/Button';
@@ -24,11 +24,32 @@ export default function SurahSection({ suwar }: ISurahSection) {
   const [visibleCount, setVisibleCount] = useState(20);
   const visibleSuwar = useMemo(() => suratList?.slice(0, visibleCount), [suratList, visibleCount]);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (suratList && visibleCount < suratList.length) {
       setVisibleCount(prev => Math.min(prev + 20, suratList.length));
     }
-  };
+  }, [suratList, visibleCount]);
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !suratList || visibleCount >= suratList.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [loadMore, suratList, visibleCount]);
 
   const PlayAudio = (surah: any) => {
     defaultReciter.name = t('default.name');
@@ -110,20 +131,7 @@ export default function SurahSection({ suwar }: ISurahSection) {
           {suratList && visibleCount < suratList.length && (
             <div
               className="col-span-full h-10 w-full"
-              ref={(el) => {
-                if (el) {
-                  const observer = new IntersectionObserver(
-                    (entries) => {
-                      if (entries[0].isIntersecting) {
-                        loadMore();
-                      }
-                    },
-                    { rootMargin: '200px' }
-                  );
-                  observer.observe(el);
-                  return () => observer.disconnect();
-                }
-              }}
+              ref={sentinelRef}
             />
           )}
         </motion.div>

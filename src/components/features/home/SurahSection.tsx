@@ -1,8 +1,8 @@
 'use client';
 import { Audio, AudioContext } from '../../context/AudioContext';
-import { useContext, useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useContext, useState, useMemo, useEffect, useRef, useCallback, type SVGProps } from 'react';
 import { defaultReciter } from '@/data/data';
-import { Suwar } from '@/types/Surah';
+import { Suwar, Surah } from '@/types/Surah';
 import Button from '../../ui/Button';
 import { generateServerUrlId } from '@/helpers/utils';
 import { useTranslations } from 'next-intl';
@@ -51,7 +51,7 @@ export default function SurahSection({ suwar }: ISurahSection) {
     return () => observer.disconnect();
   }, [loadMore, suratList, visibleCount]);
 
-  const PlayAudio = (surah: any) => {
+  const PlayAudio = (surah: Surah) => {
     defaultReciter.name = t('default.name');
     setReciter(defaultReciter);
     setOpen(true);
@@ -140,7 +140,7 @@ export default function SurahSection({ suwar }: ISurahSection) {
   );
 }
 
-function PlayIcon(props: any) {
+function PlayIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

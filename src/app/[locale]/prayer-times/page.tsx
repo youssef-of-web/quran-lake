@@ -2,9 +2,14 @@ import PrayerTimesClient from '@/components/features/prayer-times/PrayerTimesCli
 import { Metadata } from 'next';
 import { getMessages } from 'next-intl/server';
 
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+type PrayerTimesMessages = {
+    title?: string;
+    subtitle?: string;
+};
+
+export async function generateMetadata(): Promise<Metadata> {
     const messages = await getMessages();
-    const t = messages.PrayerTimes as any;
+    const t = messages.PrayerTimes as PrayerTimesMessages;
 
     return {
         title: t?.title || 'Prayer Times',

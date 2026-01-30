@@ -32,7 +32,7 @@ export const AudioWrapper = ({
   const [surah, setSurah] = useState<Surah | null>(null);
   const [surah_list, setSuratList] = useState<Surah[]>([]);
 
-  const PlayAudio = (surah: any, reciter: IReciter) => {
+  const PlayAudio = (surah: Surah, reciter: IReciter) => {
     setReciter(reciter);
     setServer(
       `${reciter?.moshaf[0].server}${generateServerUrlId(

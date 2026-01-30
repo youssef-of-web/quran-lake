@@ -2,12 +2,13 @@ import { getLocalForApi } from "./helpers/utils";
 import { axiosInstance } from "./lib/axios";
 import { BaseApiError } from "./types/ApiError";
 import { PrayerTimesResponse } from "./types/PrayerTimes";
+import type { AxiosRequestConfig } from "axios";
 
-const handleErrors = async (res: any) => {
+const handleErrors = async (res: unknown) => {
   return res;
 };
 
-const fetcher = async <T>(url: string, options?: any): Promise<T> => {
+const fetcher = async <T>(url: string, options?: AxiosRequestConfig): Promise<T> => {
   const response = await axiosInstance.get(url, options);
   return response.data as T;
 };
@@ -86,7 +87,7 @@ const retryApiCall = async <T>(
   maxRetries: number = 3,
   delay: number = 1000
 ): Promise<T> => {
-  let lastError: any;
+  let lastError: unknown;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -101,7 +102,10 @@ const retryApiCall = async <T>(
     }
   }
 
-  throw lastError;
+  if (lastError instanceof Error) {
+    throw lastError;
+  }
+  throw new Error('API call failed');
 };
 
 const getPrayerTimes = async (latitude: number, longitude: number, date?: string): Promise<PrayerTimesResponse | null> => {

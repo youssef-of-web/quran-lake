@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -109,7 +108,7 @@ export default function PrayerTimesClient() {
         );
     }
 
-    const prayerTimesList = getPrayerTimesList(prayerTimes.data.timings, locale);
+    const prayerTimesList = getPrayerTimesList(prayerTimes.data.timings);
 
     return (
         <div className={`min-h-screen bg-gray-50 dark:bg-slate-900 ${isArabic ? 'rtl' : 'ltr'}`}>
@@ -135,7 +134,6 @@ export default function PrayerTimesClient() {
                         cacheStatus={cacheStatus}
                         onRefresh={refresh}
                         onClearCache={clearCache}
-                        locale={locale}
                     />
 
                     {/* Next Prayer Card */}
@@ -157,7 +155,7 @@ export default function PrayerTimesClient() {
                         dir={'ltr'}
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
                     >
-                        {prayerTimesList.map((prayer, index) => (
+                        {prayerTimesList.map((prayer) => (
                             <PrayerTimesCard
                                 key={prayer.name}
                                 prayer={prayer}

@@ -42,7 +42,7 @@ export default async function RootLayout({
   const messages = await getMessages();
   // using native fetch with caching
   const data = await fetchReciters<RecitersResponse>(locale);
-  const filteredreciters = getFilteredReciters(data?.reciters!);
+  const filteredreciters = getFilteredReciters(data?.reciters ?? []);
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <head>
@@ -73,7 +73,7 @@ export default async function RootLayout({
               <FloatingSettings />
             </div>
             <div className="flex flex-col gap-8">
-              <AudioWrapper recitersList={filteredreciters!}>
+              <AudioWrapper recitersList={filteredreciters}>
                 <Navbar />
                 {children}
               </AudioWrapper>

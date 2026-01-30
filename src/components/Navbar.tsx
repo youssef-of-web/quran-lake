@@ -8,9 +8,7 @@ import { useEffect, useState } from 'react';
 import { InstallButton } from './Install';
 import Settings from './Settings';
 
-interface INavbar { }
-
-export default function Navbar({ }: INavbar) {
+export default function Navbar() {
   const t = useTranslations('Navigation');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

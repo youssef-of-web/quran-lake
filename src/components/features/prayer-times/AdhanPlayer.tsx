@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { PrayerTimes } from '@/types/PrayerTimes';
 import { getNextPrayer, getCurrentPrayer } from '@/helpers/prayerTimes';
 import { useTranslations } from 'next-intl';
@@ -26,13 +26,35 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
     const isArabic = locale === 'ar';
 
     // Adhan audio URLs
-    const adhanAudioUrls = {
+    const adhanAudioUrls = useMemo(() => ({
         Fajr: '/adhan.mp3',
         Dhuhr: '/adhan.mp3',
         Asr: '/adhan.mp3',
         Maghrib: '/adhan.mp3',
         Isha: '/adhan.mp3',
-    };
+    }), []);
+
+    const playAdhan = useCallback((prayerName: string) => {
+        const audioUrl = adhanAudioUrls[prayerName as keyof typeof adhanAudioUrls];
+        if (audioUrl && audioRef.current) {
+            audioRef.current.src = audioUrl;
+            audioRef.current.volume = 0.8;
+            audioRef.current.loop = false;
+            setIsPlaying(true);
+
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('Adhan started playing');
+                    })
+                    .catch((error) => {
+                        console.error('Error playing adhan:', error);
+                        setIsPlaying(false);
+                    });
+            }
+        }
+    }, [adhanAudioUrls]);
 
     useEffect(() => {
         const checkPrayerTime = () => {
@@ -82,29 +104,7 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
         checkPrayerTime();
 
         return () => clearInterval(interval);
-    }, [prayerTimes, currentPrayerName, isMuted]);
-
-    const playAdhan = (prayerName: string) => {
-        const audioUrl = adhanAudioUrls[prayerName as keyof typeof adhanAudioUrls];
-        if (audioUrl && audioRef.current) {
-            audioRef.current.src = audioUrl;
-            audioRef.current.volume = 0.8;
-            audioRef.current.loop = false;
-            setIsPlaying(true);
-
-            const playPromise = audioRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('Adhan started playing');
-                    })
-                    .catch((error) => {
-                        console.error('Error playing adhan:', error);
-                        setIsPlaying(false);
-                    });
-            }
-        }
-    };
+    }, [prayerTimes, currentPrayerName, isMuted, adhanAudioUrls, playAdhan]);
 
     const playAdhanManually = () => {
         const nextPrayer = getNextPrayer(prayerTimes);
@@ -131,17 +131,15 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
 
     // Handle audio ended event
     useEffect(() => {
-        if (audioRef.current) {
-            const handleEnded = () => {
-                setIsPlaying(false);
-            };
-            audioRef.current.addEventListener('ended', handleEnded);
-            return () => {
-                if (audioRef.current) {
-                    audioRef.current.removeEventListener('ended', handleEnded);
-                }
-            };
-        }
+        const audio = audioRef.current;
+        if (!audio) return;
+        const handleEnded = () => {
+            setIsPlaying(false);
+        };
+        audio.addEventListener('ended', handleEnded);
+        return () => {
+            audio.removeEventListener('ended', handleEnded);
+        };
     }, []);
 
     // Show first time animation when component mounts

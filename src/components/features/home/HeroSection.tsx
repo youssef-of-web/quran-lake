@@ -5,9 +5,7 @@ import { Link } from '@/lib/intl';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 
-interface IHeroSection { }
-
-export default function HeroSection({ }: IHeroSection) {
+export default function HeroSection() {
   const t = useTranslations('Home');
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-r from-slate-600 via-slate-500 to-primary dark:from-slate-800 dark:via-slate-700 dark:to-slate-900">

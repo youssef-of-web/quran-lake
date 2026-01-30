@@ -14,18 +14,15 @@ interface CacheStatusProps {
     };
     onRefresh: () => void;
     onClearCache: () => void;
-    locale: string;
 }
 
 export default function CacheStatus({
     isOffline,
     cacheStatus,
     onRefresh,
-    onClearCache,
-    locale
+    onClearCache
 }: CacheStatusProps) {
     const t = useTranslations('PrayerTimes.cache');
-    const isArabic = locale === 'ar';
 
     if (!isOffline && !cacheStatus.hasCache) {
         return null;

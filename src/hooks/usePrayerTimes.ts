@@ -79,7 +79,7 @@ export const usePrayerTimes = (): UsePrayerTimesReturn => {
                             city: locationInfo?.city,
                             country: locationInfo?.country,
                         });
-                    } catch (error) {
+                    } catch {
                         resolve({
                             latitude,
                             longitude,
@@ -251,7 +251,7 @@ export const usePrayerTimes = (): UsePrayerTimesReturn => {
         };
 
         loadInitialData();
-    }, []);
+    }, [getLocationAndPrayerTimes]);
 
     return {
         prayerTimes,

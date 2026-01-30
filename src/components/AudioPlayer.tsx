@@ -52,7 +52,7 @@ export default function AudioPlayer({
 
   const prevSurah = currentIndex > 0 ? surah_list[currentIndex - 1] : undefined;
 
-  const options = recitersList.map((r) => ({
+  const options: { label: string; value: string }[] = recitersList.map((r) => ({
     label: r.name,
     value: r.id.toString(),
   }));
@@ -229,12 +229,13 @@ export default function AudioPlayer({
               className="space-y-4"
             >
               <Select
-                onChange={(e) =>
-                  playAudio(
-                    surah,
-                    recitersList.find((r) => r.id === +e?.value!)!
-                  )
-                }
+                onChange={(option) => {
+                  const value = option?.value;
+                  if (!value) return;
+                  const nextReciter = recitersList.find((r) => r.id === Number(value));
+                  if (!nextReciter) return;
+                  playAudio(surah, nextReciter);
+                }}
                 placeholder={t('changeReciter')}
                 options={options}
                 className="w-full mb-4"

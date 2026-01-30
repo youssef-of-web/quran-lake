@@ -75,7 +75,7 @@ export const getTimeUntilNextPrayer = (prayerTimes: PrayerTimes): string => {
   }
 };
 
-export const getPrayerTimesList = (prayerTimes: PrayerTimes, locale: string = 'en'): PrayerTime[] => {
+export const getPrayerTimesList = (prayerTimes: PrayerTimes): PrayerTime[] => {
   const currentPrayer = getCurrentPrayer(prayerTimes);
   const nextPrayer = getNextPrayer(prayerTimes);
 
@@ -158,8 +158,6 @@ export const getAdhanTime = (prayerTime: string, apiAdhanTime?: string): string 
 
     // Different adhan times for different prayers based on Islamic tradition
     const prayerHour = time.getHours();
-    const prayerMinute = time.getMinutes();
-
     if (prayerHour < 6) { // Fajr - adhan typically 10-15 minutes before
       adhanTime = addMinutes(time, -10);
     } else if (prayerHour < 12) { // Dhuhr - adhan typically 5-10 minutes before

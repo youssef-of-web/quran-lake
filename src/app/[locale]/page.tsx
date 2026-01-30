@@ -4,9 +4,14 @@ import { Metadata } from "next";
 import { getMessages } from 'next-intl/server';
 import { SurahData } from "@/data/data";
 
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+type HomeMessages = {
+  title?: string;
+  subtitle?: string;
+};
+
+export async function generateMetadata(): Promise<Metadata> {
   const messages = await getMessages();
-  const t = messages.Home as any;
+  const t = messages.Home as HomeMessages;
 
   return {
     title: t?.title || 'The Holy Quran',

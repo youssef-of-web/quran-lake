@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { PrayerTimes } from '@/types/PrayerTimes';
-import { getNextPrayer, getTimeUntilNextPrayer, getPrayerNameInArabic } from '@/helpers/prayerTimes';
+import { getNextPrayer, getTimeUntilNextPrayer } from '@/helpers/prayerTimes';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -17,8 +17,6 @@ export default function NextPrayerCard({ prayerTimes, locale }: NextPrayerCardPr
   const isArabic = locale === 'ar';
 
   const nextPrayerName = getNextPrayer(prayerTimes);
-  const arabicPrayerName = getPrayerNameInArabic(nextPrayerName);
-
   useEffect(() => {
     const updateTime = () => {
       setTimeUntil(getTimeUntilNextPrayer(prayerTimes));

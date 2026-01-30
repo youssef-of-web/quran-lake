@@ -3,6 +3,8 @@ import HeroSection from "@/components/features/home/HeroSection";
 import { Metadata } from "next";
 import { getMessages } from 'next-intl/server';
 import { SurahData } from "@/data/data";
+import { fetchSurahList } from "@/lib/api-fetch";
+import { Suwar } from "@/types/Surah";
 
 type HomeMessages = {
   title?: string;
@@ -19,9 +21,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function Component() {
-  // Use static data directly - 0ms latency
-  const suwar = { suwar: SurahData };
+export default async function Component({ params }: { params: { locale: string } }) {
+  let suwar: Suwar = { suwar: SurahData };
+  try {
+    const data = await fetchSurahList<Suwar>(params.locale);
+    if (data?.suwar?.length) {
+      suwar = data;
+    }
+  } catch {
+    suwar = { suwar: SurahData };
+  }
 
   return (
     <>

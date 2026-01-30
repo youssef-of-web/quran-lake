@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { PrayerTimesResponse, Location } from '@/types/PrayerTimes';
 import { getPrayerTimes, getLocationFromCoords } from '@/api';
 import { prayerTimesCache } from '@/lib/cache';
@@ -197,10 +197,16 @@ export const usePrayerTimes = (): UsePrayerTimesReturn => {
         }
     }, [isOffline, getCurrentLocation, fetchPrayerTimes]);
 
+    const getLocationAndPrayerTimesRef = useRef(getLocationAndPrayerTimes);
+
+    useEffect(() => {
+        getLocationAndPrayerTimesRef.current = getLocationAndPrayerTimes;
+    }, [getLocationAndPrayerTimes]);
+
     // Refresh function
     const refresh = useCallback(async () => {
-        await getLocationAndPrayerTimes(true);
-    }, [getLocationAndPrayerTimes]);
+        await getLocationAndPrayerTimesRef.current(true);
+    }, []);
 
     // Clear cache function
     const clearCache = useCallback(() => {
@@ -234,7 +240,7 @@ export const usePrayerTimes = (): UsePrayerTimesReturn => {
             // If we're online, try to get fresh data
             if (prayerTimesCache.isOnline()) {
                 try {
-                    await getLocationAndPrayerTimes();
+                    await getLocationAndPrayerTimesRef.current();
                 } catch (error) {
                     console.error('Failed to load fresh data:', error);
                     // If we don't have cached data, show error
@@ -251,7 +257,7 @@ export const usePrayerTimes = (): UsePrayerTimesReturn => {
         };
 
         loadInitialData();
-    }, [getLocationAndPrayerTimes]);
+    }, []);
 
     return {
         prayerTimes,

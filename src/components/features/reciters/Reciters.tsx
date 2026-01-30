@@ -37,10 +37,13 @@ export default function Reciters({ reciters }: IReciters) {
   };
 
   const loadMore = useCallback(() => {
-    if (visibleCount < filteredReciters.length) {
-      setVisibleCount(prev => Math.min(prev + 24, filteredReciters.length));
-    }
-  }, [filteredReciters.length, visibleCount]);
+    setVisibleCount((prev) => {
+      if (prev >= filteredReciters.length) {
+        return prev;
+      }
+      return Math.min(prev + 24, filteredReciters.length);
+    });
+  }, [filteredReciters.length]);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 

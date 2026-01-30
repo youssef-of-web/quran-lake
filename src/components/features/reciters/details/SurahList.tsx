@@ -67,10 +67,13 @@ export default function SurahList({
   }, [availableSurahs, visibleCount]);
 
   const loadMore = useCallback(() => {
-    if (visibleCount < availableSurahs.length) {
-      setVisibleCount(prev => Math.min(prev + 24, availableSurahs.length));
-    }
-  }, [availableSurahs.length, visibleCount]);
+    setVisibleCount((prev) => {
+      if (prev >= availableSurahs.length) {
+        return prev;
+      }
+      return Math.min(prev + 24, availableSurahs.length);
+    });
+  }, [availableSurahs.length]);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 

@@ -25,10 +25,16 @@ export default function SurahSection({ suwar }: ISurahSection) {
   const visibleSuwar = useMemo(() => suratList?.slice(0, visibleCount), [suratList, visibleCount]);
 
   const loadMore = useCallback(() => {
-    if (suratList && visibleCount < suratList.length) {
-      setVisibleCount(prev => Math.min(prev + 20, suratList.length));
+    if (!suratList) {
+      return;
     }
-  }, [suratList, visibleCount]);
+    setVisibleCount((prev) => {
+      if (prev >= suratList.length) {
+        return prev;
+      }
+      return Math.min(prev + 20, suratList.length);
+    });
+  }, [suratList]);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 

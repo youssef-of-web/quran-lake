@@ -81,5 +81,10 @@
     "dark": "Dark",
     "system": "System",
     "comingSoon": "More settings coming soon..."
+  },
+  "Footer": {
+    "madeWith": "Made with love",
+    "by": "Youssef Mansouri",
+    "copyright": "Quran Lake. All rights reserved."
   }
 }

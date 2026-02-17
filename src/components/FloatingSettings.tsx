@@ -56,10 +56,10 @@ export default function FloatingSettings() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleButtonClick}
-                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200"
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-surface-dark shadow-lg border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:scale-110 transition-all duration-300"
                     aria-label={t('title')}
                 >
-                    <SettingsIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                    <SettingsIcon className="h-5 w-5 text-slate-700 dark:text-slate-300" />
                 </motion.button>
 
                 <AnimatePresence>
@@ -81,7 +81,7 @@ export default function FloatingSettings() {
                                 animate={{ opacity: 1, scale: 1, x: 0 }}
                                 exit={{ opacity: 0, scale: 0.95, x: isRTL ? 20 : -20 }}
                                 transition={{ duration: 0.2 }}
-                                className={`absolute top-0 w-72 rounded-lg bg-white dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-slate-700 z-50 overflow-hidden ${isRTL
+                                className={`absolute top-0 w-72 rounded-3xl bg-white dark:bg-surface-dark shadow-xl border border-slate-200 dark:border-slate-800 z-50 overflow-hidden transition-all duration-500 ${isRTL
                                     ? 'right-16 md:right-16 left-4 md:left-auto'
                                     : 'left-16 md:left-16 right-4 md:right-auto'
                                     }`}
@@ -89,18 +89,18 @@ export default function FloatingSettings() {
                             >
                                 <div className="p-4 space-y-4">
                                     {/* Header */}
-                                    <div className="border-b border-gray-200 dark:border-slate-700 pb-3">
-                                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                    <div className="border-b border-slate-200 dark:border-slate-700 pb-3">
+                                        <h3 className="text-sm font-bold text-slate-800 dark:text-white">
                                             {t('title')}
                                         </h3>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                                             {t('subtitle')}
                                         </p>
                                     </div>
 
                                     {/* Language Settings */}
                                     <div className="space-y-2">
-                                        <label className="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                                        <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">
                                             {t('language')}
                                         </label>
                                         <LocaleSwitcher variant="settings" />
@@ -108,15 +108,15 @@ export default function FloatingSettings() {
 
                                     {/* Theme Settings */}
                                     <div className="space-y-2">
-                                        <label className="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                                        <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">
                                             {t('theme')}
                                         </label>
                                         <ThemeToggle variant="settings" />
                                     </div>
 
                                     {/* Additional Settings (for future use) */}
-                                    <div className="border-t border-gray-200 dark:border-slate-700 pt-3">
-                                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    <div className="border-t border-slate-200 dark:border-slate-700 pt-3">
+                                        <div className="text-xs text-slate-500 dark:text-slate-400">
                                             {t('comingSoon')}
                                         </div>
                                     </div>

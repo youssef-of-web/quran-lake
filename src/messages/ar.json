@@ -13,6 +13,7 @@
     "title": "قراء القرآن",
     "reciter": "القارئ",
     "description": "استمع إلى القرآن الكريم",
+    "viewDetails": "عرض التفاصيل",
     "default": {
       "name": "فارس عباد"
     }
@@ -28,6 +29,7 @@
   "PrayerTimes": {
     "title": "أوقات الصلاة",
     "subtitle": "أوقات الصلاة لموقعك الحالي",
+    "fullSchedule": "الجدول الكامل",
     "location": "الموقع",
     "currentLocation": "الموقع الحالي",
     "nextPrayer": "الصلاة القادمة",
@@ -63,8 +65,12 @@
     },
     "adhanReminder": "الأذان قبل 5 دقائق",
     "adhanTime": "وقت الأذان",
-    "prayerTime": "وقت الصلاة",
-    "locationBasedAdhan": "أوقات الأذان حسب الموقع"
+    "locationBasedAdhan": "أوقات الأذان حسب الموقع",
+    "countdown": "تبدأ خلال",
+    "statusUpcoming": "قادمة",
+    "statusPassed": "مضت",
+    "statusCurrent": "الآن",
+    "quote": "أول ما يحاسب عليه العبد يوم القيامة الصلاة"
   },
   "Settings": {
     "title": "الإعدادات",

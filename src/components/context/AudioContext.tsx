@@ -57,7 +57,7 @@ export const AudioWrapper = ({
         setSuratList,
       }}
     >
-      <div className="min-h-screen pb-24">{children}</div>
+      <div className="min-h-screen pb-40 md:pb-24">{children}</div>
 
       {open && reciter && (
         <AudioPlayer

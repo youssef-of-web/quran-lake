@@ -1,6 +1,6 @@
 # Holy Quran
 
-Website: [Demo](https://quran-lake.vercel.app)
+Website: [Demo](https://quranlake.com)
 
 [Holy Quran] is an application to listen to the holy quran.
 

@@ -43,7 +43,7 @@ export default function NextPrayerCard({ prayerTimes, locale }: NextPrayerCardPr
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg"
+      className="bg-gradient-to-br from-accent-green to-green-600 dark:from-accent-green dark:to-green-700 rounded-3xl p-6 text-white shadow-lg shadow-accent-green/20 transition-all duration-500"
     >
       <div className={`flex items-center justify-between ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
         <div className={`flex items-center gap-4 ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>

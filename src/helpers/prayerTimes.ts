@@ -75,6 +75,32 @@ export const getTimeUntilNextPrayer = (prayerTimes: PrayerTimes): string => {
   }
 };
 
+export const getCountdownToNextPrayer = (prayerTimes: PrayerTimes): { hours: number; minutes: number; seconds: number } => {
+  const now = new Date();
+  const today = format(now, 'yyyy-MM-dd');
+  const nextPrayerName = getNextPrayer(prayerTimes);
+
+  let nextPrayerTime: Date;
+  if (nextPrayerName === 'Fajr' && isAfter(now, parseISO(`${today}T${prayerTimes.Isha}`))) {
+    // Next prayer is tomorrow's Fajr
+    const tomorrow = format(addMinutes(now, 24 * 60), 'yyyy-MM-dd');
+    nextPrayerTime = parseISO(`${tomorrow}T${prayerTimes.Fajr}`);
+  } else {
+    nextPrayerTime = parseISO(`${today}T${prayerTimes[nextPrayerName as keyof PrayerTimes]}`);
+  }
+
+  const diffMs = Math.max(0, nextPrayerTime.getTime() - now.getTime());
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+  return {
+    hours: diffHours,
+    minutes: diffMinutes,
+    seconds: diffSeconds,
+  };
+};
+
 export const getPrayerTimesList = (prayerTimes: PrayerTimes, locale: string = 'en'): PrayerTime[] => {
   const currentPrayer = getCurrentPrayer(prayerTimes);
   const nextPrayer = getNextPrayer(prayerTimes);

@@ -21,7 +21,7 @@ export default function Search({ placeholder, onChange }: ISearch) {
           className="h-12 w-full px-5 py-3 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm
                      border border-gray-200 dark:border-slate-600 shadow-sm
                      transition-all duration-300 ease-in-out
-                     focus:outline-none focus:border-blue-500 dark:focus:border-blue-400
+                     focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
                      placeholder:text-gray-400 dark:placeholder:text-gray-500
                      text-gray-900 dark:text-gray-100"
           placeholder={placeholder}

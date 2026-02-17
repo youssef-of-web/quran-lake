@@ -1,31 +1,60 @@
 {
-  "name": "Holy Quran",
-  "short_name": "Quran",
+  "name": "Quran lake",
+  "short_name": "The Holy Quran",
   "icons": [
     {
-      "src": "/icon_192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "icons/icon-48x48.webp",
+      "sizes": "48x48",
+      "type": "image/webp"
     },
     {
-      "src": "/icon_512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
+      "src": "icons/icon-72x72.webp",
+      "sizes": "72x72",
+      "type": "image/webp"
+    },
     {
-      "src": "/icon_512x512.png",
+      "src": "icons/icon-96x96.webp",
+      "sizes": "96x96",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-128x128.webp",
+      "sizes": "128x128",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-144x144.webp",
+      "sizes": "144x144",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-152x152.webp",
+      "sizes": "152x152",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-192x192.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-256x256.webp",
+      "sizes": "256x256",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-384x384.webp",
+      "sizes": "384x384",
+      "type": "image/webp"
+    },
+    {
+      "src": "icons/icon-512x512.webp",
       "sizes": "512x512",
-      "type": "image/png",
-      "label": "Holy Quran App",
-      "form_factor": "narrow"
+      "type": "image/webp"
     }
   ],
-  "theme_color": "#00563F",
-  "background_color": "#FFFFFF",
   "start_url": "/",
   "display": "standalone",
-  "description": "Holy Quran App - Read and Listen to Quran",
-  "categories": ["books", "education", "religious"]
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
 }

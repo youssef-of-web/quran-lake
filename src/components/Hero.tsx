@@ -22,9 +22,9 @@ export default function Hero({
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="text-center bg-gradient-to-r from-slate-600 via-slate-500 to-primary dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 min-h-[11rem] flex items-center justify-center p-6 shadow-lg relative overflow-hidden"
+      className="text-center bg-gradient-to-br from-primary via-[#0a1e2f] to-slate-900 dark:to-black min-h-[11rem] flex items-center justify-center p-6 shadow-lg relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10 dark:opacity-5" />
+      <div className="absolute inset-0 opacity-10 dark:opacity-25 mix-blend-overlay bg-cover bg-center" style={{ backgroundImage: "url('https://picsum.photos/seed/islamic-pattern/1600/600')" }}></div>
 
       <div className="flex flex-col gap-6 w-full max-w-3xl mx-auto relative z-10">
         <motion.h2

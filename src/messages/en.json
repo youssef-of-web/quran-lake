@@ -1,6 +1,6 @@
 {
   "Navigation": {
-    "logo": "The holy quran",
+    "logo": "The Holy Quran",
     "reciters": "Reciters",
     "prayerTimes": "Prayer Times"
   },
@@ -13,6 +13,7 @@
     "title": "Reciters",
     "reciter": "Reciter",
     "description": "Listen to the holy quran",
+    "viewDetails": "View Details",
     "default": {
       "name": "Fares Abbad"
     }
@@ -28,6 +29,7 @@
   "PrayerTimes": {
     "title": "Prayer Times",
     "subtitle": "Prayer times for your current location",
+    "fullSchedule": "Full Schedule",
     "location": "Location",
     "currentLocation": "Current Location",
     "nextPrayer": "Next Prayer",
@@ -63,8 +65,12 @@
     },
     "adhanReminder": "Adhan 5 min before",
     "adhanTime": "Adhan Time",
-    "prayerTime": "Prayer Time",
-    "locationBasedAdhan": "Location-based adhan times"
+    "locationBasedAdhan": "Location-based adhan times",
+    "countdown": "Starts in",
+    "statusUpcoming": "Upcoming",
+    "statusPassed": "Passed",
+    "statusCurrent": "Current",
+    "quote": "The first matter that the slave will be brought to account for on the Day of Judgment is the prayer."
   },
   "Settings": {
     "title": "Settings",

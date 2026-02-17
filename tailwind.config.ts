@@ -10,7 +10,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#0e3b5a",
+        primary: "#0e3958",
+        "primary-light": "#1a5a8a",
+        "accent-green": "#16a34a",
+        "background-dark": "#0f172a",
+        "surface-dark": "#1e293b",
+        "surface-hover": "#334155",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -43,6 +48,10 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+      },
+      fontFamily: {
+        display: ["Manrope", "sans-serif"],
+        arabic: ["Amiri", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

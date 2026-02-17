@@ -35,23 +35,23 @@ export default function CacheStatus({
         <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3"
+            className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-3xl p-4 transition-all duration-500"
         >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     {isOffline ? (
-                        <WifiOff className="w-4 h-4 text-yellow-600" />
+                        <WifiOff className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
                     ) : (
-                        <Wifi className="w-4 h-4 text-green-600" />
+                        <Wifi className="w-4 h-4 text-accent-green dark:text-accent-green" />
                     )}
-                    <span className="text-sm text-blue-700 dark:text-blue-300">
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {isOffline ? t('offlineMode') : t('onlineMode')}
                     </span>
                 </div>
 
                 <div className="flex items-center gap-2">
                     {cacheStatus.hasCache && (
-                        <div className="flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400">
+                        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
                             <Database className="w-3 h-3" />
                             <span>
                                 {t('lastUpdated')}: {cacheStatus.lastUpdated}
@@ -59,11 +59,12 @@ export default function CacheStatus({
                         </div>
                     )}
 
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                         <button
                             onClick={onRefresh}
-                            className="p-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 transition-colors"
+                            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95"
                             title={t('refresh')}
+                            aria-label={t('refresh')}
                         >
                             <RefreshCw className="w-4 h-4" />
                         </button>
@@ -71,8 +72,9 @@ export default function CacheStatus({
                         {cacheStatus.hasCache && (
                             <button
                                 onClick={onClearCache}
-                                className="p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 transition-colors"
+                                className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-all duration-300 hover:scale-105 active:scale-95"
                                 title={t('clearCache')}
+                                aria-label={t('clearCache')}
                             >
                                 <Trash2 className="w-4 h-4" />
                             </button>
@@ -82,9 +84,9 @@ export default function CacheStatus({
             </div>
 
             {cacheStatus.isExpired && (
-                <div className="mt-2 text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-1">
-                    <span>⚠️</span>
-                    <span>{t('cachedDataOutdated')}</span>
+                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700 text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-2">
+                    <span className="text-base">⚠️</span>
+                    <span className="font-medium">{t('cachedDataOutdated')}</span>
                 </div>
             )}
         </motion.div>

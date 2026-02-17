@@ -178,8 +178,8 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
                     onClick={playAdhanManually}
                     disabled={isPlaying}
                     className={`p-3 rounded-full shadow-lg transition-all duration-300 ${isPlaying
-                        ? 'bg-gray-500 cursor-not-allowed'
-                        : 'bg-blue-500 hover:bg-blue-600'
+                        ? 'bg-slate-500 dark:bg-slate-600 cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary-light dark:bg-primary dark:hover:bg-primary-light'
                         } text-white relative`}
                     aria-label="Play adhan"
                     animate={showFirstTimeAnimation ? {
@@ -261,8 +261,8 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
                 <button
                     onClick={toggleMute}
                     className={`p-3 rounded-full shadow-lg transition-all duration-300 ${isMuted
-                        ? 'bg-gray-500 hover:bg-gray-600'
-                        : 'bg-green-500 hover:bg-green-600'
+                        ? 'bg-slate-500 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-700'
+                        : 'bg-accent-green hover:bg-green-600 dark:bg-accent-green dark:hover:bg-green-600'
                         } text-white`}
                     aria-label={isMuted ? 'Unmute adhan' : 'Mute adhan'}
                 >
@@ -277,25 +277,25 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
                     initial={{ opacity: 0, y: 50, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 50, scale: 0.9 }}
-                    className="fixed top-4 left-4 right-4 z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-4 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:max-w-sm sm:w-auto"
+                    className="fixed top-4 left-4 right-4 z-50 bg-white dark:bg-surface-dark rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 transition-all duration-500 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:max-w-sm sm:w-auto"
                 >
                     <div className={`flex items-center justify-between ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
                         <div className={`flex items-center gap-3 ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
-                            <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                                <Bell className="w-5 h-5 text-green-600 dark:text-green-400" />
+                            <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+                                <Bell className="w-5 h-5 text-accent-green dark:text-accent-green" />
                             </div>
                             <div className={`text-left ${isArabic ? 'text-right' : 'text-left'}`}>
-                                <h3 className="font-semibold text-gray-900 dark:text-white">
+                                <h3 className="font-bold text-slate-800 dark:text-white text-base">
                                     {t('prayerTime')}
                                 </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                                     {currentPrayerName ? t(`prayers.${currentPrayerName.toLowerCase()}`) : ''}
                                 </p>
                             </div>
                         </div>
                         <button
                             onClick={closeNotification}
-                            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800"
                             aria-label="Close notification"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

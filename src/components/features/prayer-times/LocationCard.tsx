@@ -21,24 +21,24 @@ export default function LocationCard({ location, locale, onRefresh, isLoading }:
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       dir={'ltr'}
-      className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 shadow-sm"
+      className="bg-white dark:bg-surface-dark rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-500"
     >
       <div className={`flex items-center justify-between ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
-        <div className={`flex items-center gap-3 ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
-          <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-            <MapPin className="w-5 h-5 text-green-600 dark:text-green-400" />
+          <div className={`flex items-center gap-3 ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
+          <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl transition-colors duration-300">
+            <MapPin className="w-5 h-5 text-accent-green dark:text-accent-green" />
           </div>
           <div className={`${isArabic ? 'text-right' : 'text-left'}`}>
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-bold text-slate-800 dark:text-white text-base">
               {t('location')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
               {location.city && location.country
                 ? `${location.city}, ${location.country}`
                 : t('currentLocation')
               }
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 font-mono">
               {location.latitude.toFixed(4)}, {location.longitude.toFixed(4)}
             </p>
           </div>
@@ -47,14 +47,14 @@ export default function LocationCard({ location, locale, onRefresh, isLoading }:
         <button
           onClick={onRefresh}
           disabled={isLoading}
-          className={`p-2 rounded-lg transition-colors ${isLoading
-            ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed'
-            : 'bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50'
+          className={`p-3 rounded-2xl transition-all duration-300 ${isLoading
+            ? 'bg-slate-100 dark:bg-slate-800 cursor-not-allowed'
+            : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 hover:scale-105 active:scale-95'
             }`}
           aria-label={t('refresh')}
         >
           <RefreshCw
-            className={`w-4 h-4 text-green-600 dark:text-green-400 ${isLoading ? 'animate-spin' : ''
+            className={`w-5 h-5 text-accent-green dark:text-accent-green ${isLoading ? 'animate-spin' : ''
               }`}
           />
         </button>

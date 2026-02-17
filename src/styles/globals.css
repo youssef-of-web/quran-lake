@@ -32,24 +32,24 @@
     }
 
     .dark {
-        --background: 220 23% 11%;
+        --background: 222 47% 11%;
         --foreground: 0 0% 98%;
-        --card: 220 23% 13%;
+        --card: 222 47% 13%;
         --card-foreground: 0 0% 98%;
-        --popover: 220 23% 13%;
+        --popover: 222 47% 13%;
         --popover-foreground: 0 0% 98%;
         --primary: 210 40% 98%;
-        --primary-foreground: 220 23% 11%;
-        --secondary: 220 23% 16%;
+        --primary-foreground: 222 47% 11%;
+        --secondary: 222 47% 16%;
         --secondary-foreground: 0 0% 98%;
-        --muted: 220 23% 16%;
+        --muted: 222 47% 16%;
         --muted-foreground: 0 0% 63.9%;
-        --accent: 220 23% 16%;
+        --accent: 222 47% 16%;
         --accent-foreground: 0 0% 98%;
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 0 0% 98%;
-        --border: 220 23% 18%;
-        --input: 220 23% 18%;
+        --border: 222 47% 18%;
+        --input: 222 47% 18%;
         --ring: 210 40% 98%;
         --chart-1: 220 70% 50%;
         --chart-2: 160 60% 45%;
@@ -66,33 +66,36 @@
     transition-duration: 150ms;
 }
 
-/* Smooth scrollbar for dark mode */
+/* Smooth scrollbar - matching Quran Lake */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #0f172a;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #334155;
     border-radius: 4px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-    background: #475569;
-}
-
 ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
+    background: #475569;
 }
 
 /* Focus ring styles */
 .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
+}
+
+/* Arabic text styling */
+.arabic-text {
+    font-family: var(--font-arabic), 'Amiri', serif;
+    font-weight: 400;
+}
+
+.arabic-text-bold {
+    font-family: var(--font-arabic), 'Amiri', serif;
+    font-weight: 700;
 }

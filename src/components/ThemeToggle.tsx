@@ -41,9 +41,9 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
               whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setTheme(themeOption.value)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-left transition-colors duration-200 text-sm ${isActive
-                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all duration-300 text-sm ${isActive
+                ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-400 border border-primary/20 dark:border-primary/30'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-transparent'
                 }`}
             >
               <Icon className="h-4 w-4" />
@@ -51,7 +51,7 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
               {isActive && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className="ml-auto w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"
+                  className="ml-auto w-2 h-2 bg-primary dark:bg-blue-400 rounded-full"
                 />
               )}
             </motion.button>
@@ -67,7 +67,7 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 border border-slate-200 dark:border-slate-700"
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait">
@@ -79,13 +79,13 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
             transition={{ duration: 0.2 }}
           >
             {resolvedTheme === 'dark' ? (
-              <Moon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+              <Moon className="h-4 w-4 text-slate-700 dark:text-slate-300" />
             ) : (
-              <Sun className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+              <Sun className="h-4 w-4 text-slate-700 dark:text-slate-300" />
             )}
           </motion.div>
         </AnimatePresence>
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:block">
+        <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:block">
           {currentTheme?.label}
         </span>
       </motion.button>
@@ -108,7 +108,7 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 top-full mt-2 w-48 rounded-lg bg-white dark:bg-slate-800 shadow-lg border border-gray-200 dark:border-slate-700 z-50 overflow-hidden"
+              className="absolute right-0 top-full mt-2 w-48 rounded-3xl bg-white dark:bg-surface-dark shadow-xl border border-slate-200 dark:border-slate-800 z-50 overflow-hidden transition-all duration-500"
             >
               {themes.map((themeOption) => {
                 const Icon = themeOption.icon;
@@ -123,9 +123,9 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
                       setTheme(themeOption.value);
                       setIsOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors duration-200 ${isActive
-                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-300 ${isActive
+                      ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-400'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                       }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -133,7 +133,7 @@ export default function ThemeToggle({ variant = 'default' }: ThemeToggleProps) {
                     {isActive && (
                       <motion.div
                         layoutId="activeIndicator"
-                        className="ml-auto w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"
+                        className="ml-auto w-2 h-2 bg-primary dark:bg-blue-400 rounded-full"
                       />
                     )}
                   </motion.button>

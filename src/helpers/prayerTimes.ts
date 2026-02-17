@@ -105,9 +105,6 @@ export const getPrayerTimesList = (prayerTimes: PrayerTimes, locale: string = 'e
   const currentPrayer = getCurrentPrayer(prayerTimes);
   const nextPrayer = getNextPrayer(prayerTimes);
 
-  // Debug: Log available fields from API
-  console.log('Available prayer times fields:', Object.keys(prayerTimes));
-
   const prayerConfig = {
     Fajr: { name: 'Fajr', icon: '🌅' },
     Sunrise: { name: 'Sunrise', icon: '☀️' },

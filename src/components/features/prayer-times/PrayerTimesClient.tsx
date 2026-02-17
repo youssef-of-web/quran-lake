@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { getPrayerTimesList, getCurrentDateFormatted, getCountdownToNextPrayer, getNextPrayer } from '@/helpers/prayerTimes';
 import { usePrayerTimes } from '@/hooks/usePrayerTimes';
 import { AlertCircle, Loader2 } from 'lucide-react';
+import AdhanPlayer from '@/components/features/prayer-times/AdhanPlayer';
 
 export default function PrayerTimesClient() {
     const t = useTranslations('PrayerTimes');
@@ -289,19 +290,10 @@ export default function PrayerTimesClient() {
                     <p className="text-slate-400 italic text-sm leading-relaxed max-w-lg mx-auto">
                         "{t('quote')}"
                     </p>
-                    <div className="mt-6 flex items-center justify-center gap-4">
-                        <button className="p-3 rounded-full bg-slate-100 dark:bg-surface-dark border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
-                            <span className="material-symbols-outlined text-xl">location_on</span>
-                        </button>
-                        <button className="p-3 rounded-full bg-slate-100 dark:bg-surface-dark border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
-                            <span className="material-symbols-outlined text-xl">settings</span>
-                        </button>
-                        <button className="p-3 rounded-full bg-slate-100 dark:bg-surface-dark border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
-                            <span className="material-symbols-outlined text-xl">share</span>
-                        </button>
-                    </div>
                 </div>
             </div>
+
+            <AdhanPlayer prayerTimes={prayerTimes?.data?.timings} locale={locale} />
         </div>
     );
 }

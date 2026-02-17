@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Amiri, Manrope } from 'next/font/google';
 import '@/styles/globals.css';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { AudioWrapper } from '@/components/context/AudioContext';
 import { ThemeProvider } from '@/components/context/ThemeContext';
 import FloatingSettings from '@/components/FloatingSettings';
@@ -125,11 +126,14 @@ export default async function RootLayout({
          {/*    <div className="hidden md:block">
               <FloatingSettings />
             </div> */}
-            <div className="flex flex-col gap-8">
-              <AudioWrapper recitersList={filteredreciters!}>
-                <Navbar />
-                {children}
-              </AudioWrapper>
+            <div className="flex flex-col min-h-screen">
+              <div className="flex-1">
+                <AudioWrapper recitersList={filteredreciters!}>
+                  <Navbar />
+                  {children}
+                </AudioWrapper>
+              </div>
+              <Footer />
             </div>
           </ThemeProvider>
         </NextIntlClientProvider>

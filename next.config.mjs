@@ -7,9 +7,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const nextConfig = {
   reactStrictMode: false,
   compiler: {
-    removeConsole: process.env.NODE_ENV !== 'development' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    removeConsole: process.env.NODE_ENV !== 'development' ? true : false,
   },
 };
 

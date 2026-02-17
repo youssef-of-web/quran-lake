@@ -25,15 +25,15 @@ export default function HeroSection({ }: IHeroSection) {
   };
   
   return (
-    <section className={`relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-[#0a1e2f] to-slate-900 dark:to-black shadow-2xl border border-slate-200 dark:border-slate-800/50 group min-h-[400px] ${locale === 'ar' ? 'rtl' : 'ltr'}`}>
-      <div className="absolute inset-0 opacity-10 dark:opacity-25 mix-blend-overlay bg-cover bg-center" style={{ backgroundImage: "url('https://picsum.photos/seed/islamic-pattern/1600/600')" }}></div>
+    <section className={`relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-[#0a1e2f] to-slate-900 dark:to-black shadow-2xl border border-slate-200 dark:border-slate-800/50 group min-h-[280px] ${locale === 'ar' ? 'rtl' : 'ltr'}`}>
+      <div className="absolute inset-0 opacity-10 dark:opacity-25 mix-blend-overlay bg-cover bg-center" ></div>
       
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between p-10 md:p-16 gap-10">
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between p-6 md:p-10 gap-6">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col gap-8 max-w-3xl text-center md:text-left rtl:md:text-right"
+          className="flex flex-col gap-4 max-w-3xl text-center md:text-left rtl:md:text-right"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -47,7 +47,7 @@ export default function HeroSection({ }: IHeroSection) {
             </span>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 mt-4">
             {ayah ? (
               <>
                 <motion.h1
@@ -94,7 +94,7 @@ export default function HeroSection({ }: IHeroSection) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.3 }}
-            className="flex flex-wrap gap-4 justify-center md:justify-start pt-4"
+            className="flex flex-wrap gap-4 justify-center md:justify-start pt-2"
           >
             <Link href="/reciters">
               <motion.button
@@ -115,8 +115,8 @@ export default function HeroSection({ }: IHeroSection) {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="hidden lg:block relative shrink-0"
         >
-          <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-full border-8 border-white/5 flex items-center justify-center bg-gradient-to-b from-primary/30 to-transparent backdrop-blur-xl shadow-2xl relative overflow-hidden group-hover:scale-105 transition-transform duration-700">
-            <span className="material-symbols-outlined text-8xl text-white/20 select-none">mosque</span>
+          <div className="w-72 h-72 lg:w-72 lg:h-72 rounded-full border-8 border-white/5 flex items-center justify-center bg-gradient-to-b from-primary/30 to-transparent backdrop-blur-xl shadow-2xl relative overflow-hidden group-hover:scale-105 transition-transform duration-700">
+            <span style={{ fontSize: '4rem' }} className="material-symbols-outlined text-white/20 select-none">mosque</span>
             <div className="absolute inset-0 bg-gradient-to-tr from-accent-green/10 to-transparent"></div>
           </div>
         </motion.div>

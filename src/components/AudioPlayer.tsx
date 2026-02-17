@@ -60,7 +60,7 @@ export default function AudioPlayer({
         album: 'Quran Recitation',
         artwork: [
           {
-            src: `https://picsum.photos/seed/${surah.id}/96/96`,
+            src: ``,
             sizes: '96x96',
             type: 'image/jpeg',
           },

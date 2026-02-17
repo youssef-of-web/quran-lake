@@ -24,7 +24,7 @@ export default function Hero({
       transition={{ duration: 0.5 }}
       className="text-center bg-gradient-to-br from-primary via-[#0a1e2f] to-slate-900 dark:to-black min-h-[11rem] flex items-center justify-center p-6 shadow-lg relative overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-10 dark:opacity-25 mix-blend-overlay bg-cover bg-center" style={{ backgroundImage: "url('https://picsum.photos/seed/islamic-pattern/1600/600')" }}></div>
+      <div className="absolute inset-0 opacity-10 dark:opacity-25 mix-blend-overlay bg-cover bg-center"></div>
 
       <div className="flex flex-col gap-6 w-full max-w-3xl mx-auto relative z-10">
         <motion.h2

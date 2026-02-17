@@ -184,8 +184,15 @@ export const usePrayerTimes = (): UsePrayerTimesReturn => {
                 if (cached) {
                     setPrayerTimes(cached.prayerTimes);
                     setLocation(cached.location);
-                    setError('Using cached data due to connection issues');
-                    console.log('Using cached data due to location error');
+                    // More specific error message based on error type
+                    if (errorMessage.includes('permission') || errorMessage.includes('denied')) {
+                        setError('Location permission denied. Using cached data. Click the location button to request permission.');
+                    } else if (errorMessage.includes('timeout')) {
+                        setError('Location request timed out. Using cached data. Click the location button to try again.');
+                    } else {
+                        setError('Unable to access location. Using cached data. Click the location button to request permission.');
+                    }
+                    console.log('Using cached data due to location error:', errorMessage);
                     return;
                 }
             }

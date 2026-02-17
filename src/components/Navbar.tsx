@@ -1,17 +1,14 @@
 'use client';
 
-import { Link, usePathname, useRouter } from '@/lib/intl';
+import { Link, usePathname } from '@/lib/intl';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from './context/ThemeContext';
 import ThemeToggle from './ThemeToggle';
 import LocaleSwitcher from './LocaleSwitcher';
-import { Search } from 'lucide-react';
+import { Play, Pause, Volume2 } from 'lucide-react';
 import { usePrayerTimes } from '@/hooks/usePrayerTimes';
-import { useEffect, useState, useMemo, useRef } from 'react';
-import { getNextPrayer, getTimeUntilNextPrayer, getPrayerTimesList } from '@/helpers/prayerTimes';
-import { getReciters } from '@/api';
-import { IReciter, RecitersResponse } from '@/types/Reciter';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { getNextPrayer, getTimeUntilNextPrayer } from '@/helpers/prayerTimes';
 
 interface INavbar { }
 
@@ -19,147 +16,162 @@ export default function Navbar({ }: INavbar) {
   const t = useTranslations('Navigation');
   const tPrayer = useTranslations('PrayerTimes');
   const locale = useLocale();
-  const { resolvedTheme } = useTheme();
   const pathname = usePathname();
-  const router = useRouter();
+
   const { location, prayerTimes } = usePrayerTimes();
   const [isLocationEnabled, setIsLocationEnabled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [nextPrayerInfo, setNextPrayerInfo] = useState<{ name: string; timeUntil: string } | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [reciters, setReciters] = useState<IReciter[]>([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const [isPlayingAdhan, setIsPlayingAdhan] = useState(false);
+  const [showPlayHint, setShowPlayHint] = useState(false);
+  const [showFirstTimeAnimation, setShowFirstTimeAnimation] = useState(false);
+  const adhanAudioRef = useRef<HTMLAudioElement | null>(null);
 
+  const ADHAN_AUDIO_URL = '/adhan.mp3';
+
+  // Memoized location check
+  const hasLocation = useMemo(() => isLocationEnabled || location !== null, [isLocationEnabled, location]);
+
+  // Initialize adhan audio element
   useEffect(() => {
-    // Check if geolocation is supported and permission status
-    if (typeof window !== 'undefined' && 'geolocation' in navigator) {
-      navigator.permissions?.query({ name: 'geolocation' }).then((result) => {
+    if (!adhanAudioRef.current) {
+      adhanAudioRef.current = new Audio();
+      adhanAudioRef.current.addEventListener('ended', () => setIsPlayingAdhan(false));
+    }
+    return () => {
+      if (adhanAudioRef.current) {
+        adhanAudioRef.current.removeEventListener('ended', () => setIsPlayingAdhan(false));
+      }
+    };
+  }, []);
+
+  // Play adhan function - memoized
+  const playAdhan = useCallback(() => {
+    if (!adhanAudioRef.current) return;
+
+    adhanAudioRef.current.pause();
+    adhanAudioRef.current.currentTime = 0;
+    adhanAudioRef.current.src = ADHAN_AUDIO_URL;
+    adhanAudioRef.current.volume = 0.8;
+    adhanAudioRef.current.loop = false;
+    setIsPlayingAdhan(true);
+
+    adhanAudioRef.current.play().catch(() => setIsPlayingAdhan(false));
+  }, []);
+
+  // Stop adhan function - memoized
+  const stopAdhan = useCallback(() => {
+    if (adhanAudioRef.current) {
+      adhanAudioRef.current.pause();
+      adhanAudioRef.current.currentTime = 0;
+      adhanAudioRef.current.src = '';
+    }
+    setIsPlayingAdhan(false);
+  }, []);
+
+  // Toggle adhan - memoized
+  const toggleAdhan = useCallback(() => {
+    isPlayingAdhan ? stopAdhan() : playAdhan();
+  }, [isPlayingAdhan, playAdhan, stopAdhan]);
+
+  // Check geolocation permission status
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('geolocation' in navigator)) {
+      setIsLocationEnabled(false);
+      return;
+    }
+
+    navigator.permissions?.query({ name: 'geolocation' })
+      .then((result) => {
         setIsLocationEnabled(result.state === 'granted' || result.state === 'prompt');
         result.onchange = () => {
           setIsLocationEnabled(result.state === 'granted' || result.state === 'prompt');
         };
-      }).catch(() => {
-        // If permissions API is not supported, assume location might be available
-        setIsLocationEnabled(true);
-      });
-    } else {
-      setIsLocationEnabled(false);
-    }
+      })
+      .catch(() => setIsLocationEnabled(true));
   }, []);
 
-  // Also check if we have location data
-  const hasLocation = isLocationEnabled || location !== null;
-
-  // Get next prayer info
+  // Update next prayer info
   useEffect(() => {
-    if (prayerTimes?.data?.timings) {
+    if (!prayerTimes?.data?.timings) {
+      setNextPrayerInfo(null);
+      return;
+    }
+
+    const updatePrayerInfo = () => {
       const nextPrayerName = getNextPrayer(prayerTimes.data.timings);
       const timeUntil = getTimeUntilNextPrayer(prayerTimes.data.timings);
-      setNextPrayerInfo({
-        name: nextPrayerName,
-        timeUntil: timeUntil,
-      });
+      setNextPrayerInfo({ name: nextPrayerName, timeUntil });
+    };
 
-      // Update time every minute
-      const interval = setInterval(() => {
-        const updatedTimeUntil = getTimeUntilNextPrayer(prayerTimes.data.timings);
-        setNextPrayerInfo(prev => prev ? { ...prev, timeUntil: updatedTimeUntil } : null);
-      }, 60000);
-
-      return () => clearInterval(interval);
-    }
+    updatePrayerInfo();
+    const interval = setInterval(updatePrayerInfo, 60000);
+    return () => clearInterval(interval);
   }, [prayerTimes]);
 
-  // Close mobile menu when clicking outside
+  // Close mobile menu handlers
   useEffect(() => {
+    if (!mobileMenuOpen) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (mobileMenuOpen && !target.closest('.mobile-menu-container') && !target.closest('button[aria-label="Menu"]')) {
+      if (!target.closest('.mobile-menu-container') && !target.closest('button[aria-label="Menu"]')) {
         setMobileMenuOpen(false);
       }
     };
 
-    if (mobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [mobileMenuOpen]);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Fetch reciters on mount
+  // Show first time animation when component mounts
   useEffect(() => {
-    const fetchReciters = async () => {
-      try {
-        const data = await getReciters<RecitersResponse>();
-        if (data?.reciters) {
-          setReciters(data.reciters);
-        }
-      } catch (error) {
-        console.error('Failed to fetch reciters:', error);
-      }
-    };
-    fetchReciters();
+    const hasVisited = localStorage.getItem('navbarAdhanVisited');
+    if (!hasVisited) {
+      setTimeout(() => {
+        setShowFirstTimeAnimation(true);
+        localStorage.setItem('navbarAdhanVisited', 'true');
+      }, 2000);
+    }
   }, []);
 
-  // Filter reciters based on search query
-  const filteredReciters = useMemo(() => {
-    if (!searchQuery.trim()) return [];
-    const query = searchQuery.toLowerCase();
-    return reciters.filter((reciter) =>
-      reciter.name.toLowerCase().includes(query)
-    ).slice(0, 5); // Limit to 5 results
-  }, [searchQuery, reciters]);
-
-  // Close search results when clicking outside
+  // Show play hint animation periodically (only after first time animation)
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowSearchResults(false);
+    const interval = setInterval(() => {
+      if (!isPlayingAdhan && !showFirstTimeAnimation) {
+        setShowPlayHint(true);
+        setTimeout(() => setShowPlayHint(false), 3000);
       }
-    };
+    }, 10000);
 
-    if (showSearchResults) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    return () => clearInterval(interval);
+  }, [isPlayingAdhan, showFirstTimeAnimation]);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showSearchResults]);
-
-  // Handle reciter selection
-  const handleReciterSelect = (reciterId: number) => {
-    setSearchQuery('');
-    setShowSearchResults(false);
-    router.push(`/reciters/${reciterId}`);
-  };
-
-  // Handle search input change
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setShowSearchResults(e.target.value.trim().length > 0);
-  };
-
-  // Handle Enter key press
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && filteredReciters.length > 0) {
-      handleReciterSelect(filteredReciters[0].id);
-    }
-  };
-
-  const translations = {
-    searchPlaceholder: locale === 'en' ? "Search Reciter..." : "ابحث عن قارئ...",
+  // Memoized translations
+  const translations = useMemo(() => ({
     nextPrayer: locale === 'en' ? "Next" : "القادم",
     inTime: locale === 'en' ? "in" : "خلال",
-  };
+  }), [locale]);
+
+  // Memoized button class names
+  const buttonBaseClasses = useMemo(() => 
+    'flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all',
+    []
+  );
+
+  const buttonInactiveClasses = useMemo(() =>
+    'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700',
+    []
+  );
+
+  const buttonActiveClasses = useMemo(() =>
+    'bg-primary text-white',
+    []
+  );
 
   return (
     <header className="sticky top-0 z-50 flex h-20 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 px-6 lg:px-12 backdrop-blur-md">
@@ -180,6 +192,229 @@ export default function Navbar({ }: INavbar) {
             </span>
           </div>
         )}
+        
+        {/* Adhan Play Button */}
+        <div className="relative">
+          <motion.button
+            onClick={() => {
+              toggleAdhan();
+              setShowPlayHint(false);
+              setShowFirstTimeAnimation(false);
+            }}
+            className={`
+              flex items-center justify-center px-3 py-2 rounded-xl transition-all duration-300 overflow-visible
+              ${isPlayingAdhan
+                ? 'bg-gradient-to-br from-accent-green to-green-600 text-white shadow-lg shadow-accent-green/40'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+              }
+            `}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            animate={isPlayingAdhan ? {
+              boxShadow: [
+                "0 0 0 0 rgba(22, 163, 74, 0.7)",
+                "0 0 0 10px rgba(22, 163, 74, 0)",
+                "0 0 0 0 rgba(22, 163, 74, 0)"
+              ]
+            } : showFirstTimeAnimation ? {
+              scale: [1, 1.08, 1],
+            } : showPlayHint ? {
+              scale: [1, 1.05, 1],
+            } : {}}
+            transition={isPlayingAdhan ? {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeOut"
+            } : showFirstTimeAnimation ? {
+              duration: 1.2,
+              repeat: Infinity,
+              repeatType: "reverse"
+            } : showPlayHint ? {
+              duration: 0.8,
+              repeat: Infinity,
+              repeatType: "reverse"
+            } : {}}
+            title={isPlayingAdhan 
+              ? (locale === 'ar' ? 'إيقاف الأذان' : 'Stop Adhan') 
+              : (locale === 'ar' ? 'تشغيل الأذان' : 'Play Adhan')
+            }
+            aria-label={isPlayingAdhan ? 'Stop adhan' : 'Play adhan'}
+          >
+            {isPlayingAdhan ? (
+              <>
+                <Pause className="h-4 w-4 relative z-10" />
+                {/* Pulsing rings effect when playing */}
+                <motion.div
+                  className="absolute inset-0 rounded-xl border-2 border-white/50 pointer-events-none"
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    opacity: [0.8, 0, 0.8],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeOut"
+                  }}
+                />
+                <motion.div
+                  className="absolute inset-0 rounded-xl border-2 border-white/30 pointer-events-none"
+                  animate={{
+                    scale: [1, 1.08, 1],
+                    opacity: [0.6, 0, 0.6],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeOut",
+                    delay: 0.3
+                  }}
+                />
+              </>
+            ) : (
+              <Play className="h-4 w-4" />
+            )}
+          </motion.button>
+          
+          {/* Smooth tooltip hint */}
+          <AnimatePresence>
+            {(showPlayHint || showFirstTimeAnimation) && !isPlayingAdhan && (
+              <motion.div
+                initial={{ opacity: 0, x: -5, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -5, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute top-1/2 left-full ml-2 transform -translate-y-1/2 text-white text-[10px] px-2 py-1 rounded-md shadow-lg whitespace-nowrap pointer-events-none z-[9999]"
+                style={{
+                  backgroundColor: showFirstTimeAnimation ? '#f97316' : '#2563eb'
+                }}
+              >
+                <div className="flex items-center gap-1">
+                  <Volume2 className="w-2.5 h-2.5 flex-shrink-0" />
+                  <span className="font-medium">
+                    {locale === 'ar' 
+                      ? 'اضغط للاستماع للأذان' 
+                      : 'Click to play adhan'
+                    }
+                  </span>
+                </div>
+                {/* Arrow pointing to button */}
+                <div className="absolute top-1/2 right-full transform -translate-y-1/2">
+                  <div 
+                    className="w-0 h-0 border-t-[4px] border-b-[4px] border-r-[4px] border-transparent"
+                    style={{
+                      borderRightColor: showFirstTimeAnimation ? '#f97316' : '#2563eb'
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Toast Notification for Play Adhan */}
+          <AnimatePresence>
+            {isPlayingAdhan && (
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25
+                }}
+                className="fixed top-20 right-6 z-[100] hidden md:block"
+              >
+                <div className="relative">
+                  {/* Glow effect behind toast */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-accent-green/30 via-green-500/20 to-emerald-600/30 rounded-3xl blur-2xl pointer-events-none"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      opacity: [0.5, 0.8, 0.5],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  
+                  {/* Toast container */}
+                  <motion.div
+                    className="relative flex items-center gap-4 px-5 py-4 bg-white dark:bg-surface-dark rounded-3xl shadow-2xl border-2 border-accent-green/30 backdrop-blur-md"
+                    animate={{
+                      boxShadow: [
+                        "0 20px 60px rgba(22, 163, 74, 0.3)",
+                        "0 25px 70px rgba(22, 163, 74, 0.5)",
+                        "0 20px 60px rgba(22, 163, 74, 0.3)"
+                      ]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    {/* Icon section */}
+                    <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-accent-green to-green-600 shadow-lg">
+                      <motion.div
+                        animate={{
+                          scale: [1, 1.1, 1],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <Play className="w-6 h-6 text-white fill-white" />
+                      </motion.div>
+                    </div>
+                    
+                    {/* Content section */}
+                    <div className="flex-1">
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">
+                        {locale === 'ar' ? 'الأذان يعمل الآن' : 'Adhan is Playing'}
+                      </h3>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">
+                        {locale === 'ar' ? 'استمع إلى الأذان' : 'Listen to the call to prayer'}
+                      </p>
+                    </div>
+                    
+                    {/* Action button */}
+                    <motion.button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        stopAdhan();
+                      }}
+                      className="px-4 py-2 bg-gradient-to-r from-accent-green to-green-600 text-white rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 relative z-10"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      aria-label="Stop adhan"
+                    >
+                      <Pause className="w-4 h-4" />
+                      <span>{locale === 'ar' ? 'إيقاف' : 'Stop'}</span>
+                    </motion.button>
+                    
+                    {/* Animated border */}
+                    <motion.div
+                      className="absolute inset-0 rounded-3xl border-2 border-accent-green/50 pointer-events-none"
+                      animate={{
+                        opacity: [0.3, 0.6, 0.3],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         {/* Theme Toggle */}
         <ThemeToggle />
@@ -245,10 +480,10 @@ export default function Navbar({ }: INavbar) {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all ${
+                className={`${buttonBaseClasses} ${
                   pathname === '/' || pathname?.includes('/page')
-                    ? 'bg-primary text-white'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    ? buttonActiveClasses
+                    : buttonInactiveClasses
                 }`}
               >
                 <span className="material-symbols-outlined text-xl">home</span>
@@ -259,10 +494,10 @@ export default function Navbar({ }: INavbar) {
               <Link
                 href="/reciters"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all ${
+                className={`${buttonBaseClasses} ${
                   pathname?.includes('/reciters')
-                    ? 'bg-primary text-white'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    ? buttonActiveClasses
+                    : buttonInactiveClasses
                 }`}
               >
                 <span className="material-symbols-outlined text-xl">record_voice_over</span>
@@ -274,10 +509,10 @@ export default function Navbar({ }: INavbar) {
                 <Link
                   href="/prayer-times"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all ${
+                  className={`${buttonBaseClasses} ${
                     pathname?.includes('/prayer-times')
-                      ? 'bg-accent-green text-white'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      ? buttonActiveClasses
+                      : buttonInactiveClasses
                   }`}
                 >
                   <span className="material-symbols-outlined text-xl">schedule</span>

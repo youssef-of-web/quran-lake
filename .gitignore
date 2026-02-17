@@ -8,6 +8,7 @@
 .gitlab-ci.yml
 compose.yaml
 .idea
+.env
 
 # Auto Generated PWA files
 **/public/sw.js

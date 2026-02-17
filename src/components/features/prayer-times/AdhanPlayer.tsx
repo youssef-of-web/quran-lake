@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { PrayerTimes } from '@/types/PrayerTimes';
 import { getNextPrayer, getCurrentPrayer } from '@/helpers/prayerTimes';
 import { useTranslations } from 'next-intl';
-import { Bell, Volume2, VolumeX, Play } from 'lucide-react';
+import { Bell, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format, parseISO, addMinutes } from 'date-fns';
 
@@ -16,13 +16,11 @@ interface AdhanPlayerProps {
 export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
     const t = useTranslations('PrayerTimes');
     const [isMuted, setIsMuted] = useState(false);
-    const [showNotification, setShowNotification] = useState(false);
     const [currentPrayerName, setCurrentPrayerName] = useState<string | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [showPlayHint, setShowPlayHint] = useState(false);
     const [showFirstTimeAnimation, setShowFirstTimeAnimation] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const notificationRef = useRef<HTMLDivElement | null>(null);
     const isArabic = locale === 'ar';
 
     // Adhan audio URLs
@@ -59,14 +57,8 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
 
 
                     if (!isMuted && adhanAudioUrls[prayer as keyof typeof adhanAudioUrls]) {
-                        setShowNotification(true);
                         playAdhan(prayer);
                     }
-
-
-                    setTimeout(() => {
-                        setShowNotification(false);
-                    }, 30000);
                     break;
                 }
             }
@@ -120,13 +112,14 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
         }
     };
 
-    const closeNotification = () => {
-        setShowNotification(false);
+    const stopAdhan = () => {
         if (audioRef.current) {
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
-            setIsPlaying(false);
+            audioRef.current.src = '';
         }
+        setIsPlaying(false);
+        setCurrentPrayerName(null);
     };
 
     // Handle audio ended event
@@ -270,41 +263,6 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
                 </button>
             </div>
 
-            {/* Prayer Time Notification */}
-            {showNotification && (
-                <motion.div
-                    ref={notificationRef}
-                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 50, scale: 0.9 }}
-                    className="fixed top-4 left-4 right-4 z-50 bg-white dark:bg-surface-dark rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 transition-all duration-500 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:max-w-sm sm:w-auto"
-                >
-                    <div className={`flex items-center justify-between ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
-                        <div className={`flex items-center gap-3 ${isArabic ? 'flex-row-reverse' : 'flex-row'}`}>
-                            <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl">
-                                <Bell className="w-5 h-5 text-accent-green dark:text-accent-green" />
-                            </div>
-                            <div className={`text-left ${isArabic ? 'text-right' : 'text-left'}`}>
-                                <h3 className="font-bold text-slate-800 dark:text-white text-base">
-                                    {t('prayerTime')}
-                                </h3>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                    {currentPrayerName ? t(`prayers.${currentPrayerName.toLowerCase()}`) : ''}
-                                </p>
-                            </div>
-                        </div>
-                        <button
-                            onClick={closeNotification}
-                            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800"
-                            aria-label="Close notification"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </motion.div>
-            )}
         </>
     );
 } 

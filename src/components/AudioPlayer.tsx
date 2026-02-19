@@ -216,7 +216,7 @@ export default function AudioPlayer({
                 value={options.find(opt => opt.value === reciter.id.toString())}
                 options={options}
                 menuPlacement="top"
-                isSearchable={false}
+                isSearchable={true}
                 styles={{
                   control: (base, state) => ({
                     ...base,
@@ -265,6 +265,12 @@ export default function AudioPlayer({
                     ...base,
                     color: isDark ? '#94a3b8' : '#64748b',
                     padding: '4px',
+                  }),
+                  input: (base) => ({
+                    ...base,
+                    color: isDark ? '#ffffff' : '#1e293b',
+                    margin: '0',
+                    fontSize: '0.875rem',
                   }),
                 }}
               />
@@ -340,7 +346,7 @@ export default function AudioPlayer({
                     value={options.find(opt => opt.value === reciter.id.toString())}
                     options={options}
                     menuPlacement="top"
-                    isSearchable={false}
+                    isSearchable={true}
                     placeholder={locale === 'en' ? 'Change Reciter' : 'تغيير القارئ'}
                     styles={{
                       control: (base, state) => ({
@@ -390,6 +396,12 @@ export default function AudioPlayer({
                         ...base,
                         color: isDark ? '#94a3b8' : '#64748b',
                         padding: '6px',
+                      }),
+                      input: (base) => ({
+                        ...base,
+                        color: isDark ? '#ffffff' : '#1e293b',
+                        margin: '0',
+                        fontSize: '0.875rem',
                       }),
                     }}
                   />
@@ -584,6 +596,13 @@ export default function AudioPlayer({
                             color: isDark ? '#94a3b8' : '#64748b',
                             padding: '6px',
                             transition: 'transform 0.2s',
+                          }),
+                          input: (base) => ({
+                            ...base,
+                            color: isDark ? '#ffffff' : '#1e293b',
+                            margin: '0',
+                            padding: '8px 12px',
+                            fontSize: '0.875rem',
                           }),
                         }}
                       />

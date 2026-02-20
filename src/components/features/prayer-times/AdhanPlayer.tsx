@@ -6,7 +6,7 @@ import { getNextPrayer, getCurrentPrayer } from '@/helpers/prayerTimes';
 import { useTranslations } from 'next-intl';
 import { Bell, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { format, parseISO, addMinutes } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface AdhanPlayerProps {
     prayerTimes: PrayerTimes;
@@ -48,7 +48,7 @@ export default function AdhanPlayer({ prayerTimes, locale }: AdhanPlayerProps) {
                 if (apiAdhanTime) {
                     adhanTime = parseISO(`${today}T${apiAdhanTime}`);
                 } else {
-                    adhanTime = addMinutes(prayerTime, -5);
+                    adhanTime = prayerTime;
                 }
 
                 const timeDiff = Math.abs(now.getTime() - adhanTime.getTime());
